@@ -29,6 +29,33 @@ const fill = new THREE.DirectionalLight(0xa9c4ff, 0.6); fill.position.set(-0.6, 
 const camera = new THREE.PerspectiveCamera(40, 1, 0.004, 50);
 const orbit = new OrbitControls(camera, renderer.domElement);
 orbit.enableDamping = true; orbit.dampingFactor = 0.12; orbit.minDistance = 0.03; orbit.maxDistance = 5;
+orbit.zoomToCursor = true;                                      // wheel zooms towards what's under the mouse, like Blender
+
+// ───────── mouse navigation ─────────
+// Blender style (default): middle-drag orbits, Shift+middle pans, Ctrl+middle zooms, wheel zooms; left click selects.
+// Alt+left-drag stands in for the middle button (laptops / trackpads). Classic: left orbits, right pans, middle zooms.
+const NAV_HINT = {
+  blender: '<span><b>Middle-drag</b> orbit</span><span><b>Shift</b> pan</span><span><b>Ctrl</b> / <b>wheel</b> zoom</span><span><b>Alt+left</b> = middle</span>',
+  classic: '<span><b>Drag</b> orbit</span><span><b>Right-drag</b> pan</span><span><b>Wheel</b> zoom</span>',
+};
+const navMode = () => (prefs.mouse === 'classic' ? 'classic' : 'blender');
+function applyMouseMode() {
+  orbit.mouseButtons = navMode() === 'blender'
+    ? { LEFT: null, MIDDLE: THREE.MOUSE.ROTATE, RIGHT: null }
+    : { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+  $('hint').innerHTML = NAV_HINT[navMode()];
+}
+// decide what a Blender-style drag does from its modifier keys, before OrbitControls sees the press
+// (OrbitControls itself turns Shift + ROTATE into a pan)
+renderer.domElement.addEventListener('pointerdown', e => {
+  if (navMode() !== 'blender' || e.pointerType !== 'mouse') return;
+  const action = e.ctrlKey || e.metaKey ? THREE.MOUSE.DOLLY : THREE.MOUSE.ROTATE;
+  orbit.mouseButtons.MIDDLE = action;
+  orbit.mouseButtons.LEFT = e.button === 0 && e.altKey ? action : null;
+}, { capture: true });
+// no browser auto-scroll / paste on middle click over the viewport
+renderer.domElement.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });
+renderer.domElement.addEventListener('auxclick', e => { if (e.button === 1) e.preventDefault(); });
 const grid = new THREE.GridHelper(1, 40, 0x2a3242, 0x1a2030); grid.position.y = -0.36; scene.add(grid);
 
 // ───────── hands ─────────
@@ -256,7 +283,7 @@ renderer.domElement.addEventListener('pointerdown', e => { downAt = [e.clientX, 
 renderer.domElement.addEventListener('pointerup', e => {
   if (!downAt || gizmoHot || dragging) { downAt = null; return; }
   const moved = Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]); downAt = null;
-  if (moved > 5 || e.button !== 0) return;
+  if (moved > 5 || e.button !== 0 || (e.altKey && navMode() === 'blender')) return;
   pick(e);
 });
 renderer.domElement.addEventListener('pointermove', e => {
@@ -1082,6 +1109,7 @@ function showSPane(p) {
 function syncSettings() {
   $('setHome').checked = prefs.homeOnStart !== false; $('setGrip').checked = prefs.autoGripNew !== false;
   $('setUnits').value = prefs.importUnits || 'fit'; $('setHints').checked = prefs.hints !== false;
+  document.querySelectorAll('#setMouse button').forEach(b => b.classList.toggle('on', b.dataset.m === navMode()));
   document.querySelectorAll('#setZoom button').forEach(b => { b.classList.toggle('on', +b.dataset.z === (prefs.uiScale || 1)); b.disabled = !window.desktop; });
   $('zoomHint').textContent = window.desktop ? 'Makes text and controls bigger or smaller.' : 'In a browser, use Ctrl + / Ctrl − to zoom instead.';
   renderUpdate();
@@ -1094,6 +1122,7 @@ $('settingsDlg').onclick = e => { if (e.target === $('settingsDlg')) closeSettin
 $('setHome').onchange = e => { prefs.homeOnStart = e.target.checked; scheduleSave(); };
 $('setGrip').onchange = e => { prefs.autoGripNew = e.target.checked; scheduleSave(); };
 $('setUnits').onchange = e => { prefs.importUnits = e.target.value; scheduleSave(); };
+document.querySelectorAll('#setMouse button').forEach(b => b.onclick = () => { prefs.mouse = b.dataset.m; applyMouseMode(); syncSettings(); scheduleSave(); });
 $('setHints').onchange = e => { prefs.hints = e.target.checked; $('hint').hidden = !prefs.hints; scheduleSave(); };
 document.querySelectorAll('#setZoom button').forEach(b => b.onclick = async () => {
   prefs.uiScale = +b.dataset.z; scheduleSave(); syncSettings();
@@ -1344,6 +1373,9 @@ addEventListener('keydown', e => {
   if (!$('importDlg').hidden || !$('settingsDlg').hidden) return;
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); return $('palette').hidden ? openPalette() : closePalette(); }
   if (!$('palette').hidden) return;
+  const NUMVIEW = { Numpad1: e.ctrlKey ? 'back' : 'front', Numpad3: 'thumb', Numpad7: 'top', Numpad0: 'pov' };
+  if (!typing && $('models').hidden && NUMVIEW[e.code]) { e.preventDefault(); return view(NUMVIEW[e.code]); }
+  if (!typing && $('models').hidden && e.code === 'NumpadDecimal') { e.preventDefault(); return frameSelection(); }
   if ((e.ctrlKey || e.metaKey) && !typing) {
     if (e.key.toLowerCase() === 'z' && !e.shiftKey) { e.preventDefault(); return undo(); }
     if (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey)) { e.preventDefault(); return redo(); }
@@ -1355,8 +1387,8 @@ addEventListener('keydown', e => {
   if (e.key === '/') { e.preventDefault(); return openPalette(); }
   if (e.key.toLowerCase() === 'h') return $('models').hidden ? showModels() : closeModels();
   const k = e.key.toLowerCase();
-  if (k === 'w') setTool('move');
-  else if (k === 'e') setTool('rotate');
+  if (k === 'w' || k === 'g') setTool('move');            // G / R as in Blender
+  else if (k === 'e' || k === 'r') setTool('rotate');
   else if (k === 's') setTool('select');
   else if (k === 'q') setSpace(space === 'local' ? 'world' : 'local');
   else if (k === 'x') setSnap(!snap);
@@ -1523,6 +1555,7 @@ refreshItemUI(); refreshUI();
   if (!(want && models[want] && await openModel(want, { quiet: true }))) await openModel(SAMPLE_ID('bottle'), { quiet: true });
   if (prefs.homeOnStart !== false) showModels();
 })();
+applyMouseMode();
 if (prefs.hints === false) $('hint').hidden = true;
 if (window.desktop && prefs.uiScale && prefs.uiScale !== 1) window.desktop.setZoom(prefs.uiScale);
 

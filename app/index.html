@@ -253,7 +253,7 @@
           <kbd>Ctrl K</kbd><span>Search every action</span><kbd>Ctrl O</kbd><span>Import a model</span>
           <kbd>S W E</kbd><span>Select · move · rotate</span><kbd>Q</kbd><span>Local / world gizmo</span><kbd>X</kbd><span>Snap</span>
           <kbd>Tab</kbd><span>Switch hand</span><kbd>M</kbd><span>Mirror onto the other hand</span>
-          <kbd>F</kbd><span>Frame selection</span><kbd>H</kbd><span>Home</span><kbd>Esc</kbd><span>Deselect / close</span>
+          <kbd>F</kbd><span>Frame selection (or numpad .)</span><kbd>Middle-drag</kbd><span>Orbit · Shift pan · Ctrl zoom</span><kbd>Numpad 1 3 7 0</kbd><span>Front · side · top · first person (Ctrl+1 back)</span><kbd>G R</kbd><span>Move · rotate</span><kbd>H</kbd><span>Home</span><kbd>Esc</kbd><span>Deselect / close</span>
           <kbd>Ctrl Z / Y</kbd><span>Undo / redo</span>
         </div></div>
       </div>
@@ -343,6 +343,7 @@
           <h2>General</h2>
           <label class="srow switch"><span class="lab"><b>Open on the Home screen</b><span>Show your models when the app starts.</span></span><input type="checkbox" id="setHome"><span class="track"></span></label>
           <label class="srow switch"><span class="lab"><b>Auto-grip new models</b><span>Close the fingers onto a model the first time it opens.</span></span><input type="checkbox" id="setGrip"><span class="track"></span></label>
+          <div class="srow"><span class="lab"><b>Mouse controls</b><span>Blender: middle-drag orbits, Shift pans, Ctrl zooms, Alt+left = middle. Classic: left orbits, right pans.</span></span><div class="seg" id="setMouse"><button data-m="blender">Blender</button><button data-m="classic">Classic</button></div></div>
           <div class="srow"><span class="lab"><b>Default size for imports</b><span>Pre-selected in the import window.</span></span><select id="setUnits" style="width:180px"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></div>
         </section>
         <section class="spane" data-spane="display">
