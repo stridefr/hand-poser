@@ -1,7 +1,7 @@
 {
   "name": "hand-poser",
   "productName": "Hand Poser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pose a gorilla hand around your own 3D models: per-bone controls, fingertip IK, exact left/right mirroring and a model library.",
   "author": {
     "name": "stridefr"
