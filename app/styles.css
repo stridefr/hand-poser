@@ -15,7 +15,7 @@
   --font:"Inter", system-ui, "Segoe UI", sans-serif; --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 * { box-sizing:border-box; }
-html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font:14px/1.5 var(--font); overflow:hidden; -webkit-font-smoothing:antialiased; }
+html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font:14px/1.5 var(--font); overflow:clip; -webkit-font-smoothing:antialiased; }   /* clip: the page itself can never be scrolled, only its panels */
 button, input, select { font:inherit; color:inherit; }
 ::selection { background:var(--accent-tint); }
 :focus-visible { outline:2px solid var(--accent-line); outline-offset:2px; }
@@ -91,8 +91,9 @@ body.desktop #appbar button, body.desktop #appbar input, body.desktop #appbar la
 .hand-dot { width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.5; }
 .seg > button.on .hand-dot { background:var(--accent2); opacity:1; box-shadow:0 0 8px var(--accent); }
 
-.switch { display:flex; align-items:center; gap:11px; cursor:pointer; user-select:none; color:var(--text2); font-size:13.5px; min-height:28px; }
-.switch input { position:absolute; opacity:0; pointer-events:none; }
+.switch { position:relative; display:flex; align-items:center; gap:11px; cursor:pointer; user-select:none; color:var(--text2); font-size:13.5px; min-height:28px; }
+/* the real checkbox sits invisibly inside its switch; anchored here so focusing it never scrolls the page */
+.switch input { position:absolute; left:0; top:50%; width:1px; height:1px; margin:0; opacity:0; pointer-events:none; }
 .switch .track { width:34px; height:20px; border-radius:99px; background:var(--surface3); border:1px solid var(--line2); position:relative; flex:none; transition:background .18s, border-color .18s; }
 .switch .track::after { content:''; position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#80808a; transition:transform .18s cubic-bezier(.3,1.4,.6,1), background .18s; }
 .switch input:checked + .track { background:var(--accent); border-color:var(--accent); }

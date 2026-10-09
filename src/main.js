@@ -1486,6 +1486,8 @@ function resize() {
   renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
 }
 new ResizeObserver(resize).observe($('view')); resize();
+// belt and braces: if anything ever scrolls the page itself (it has no scrollable content), put it back
+addEventListener('scroll', () => { if (document.scrollingElement.scrollTop || document.scrollingElement.scrollLeft) document.scrollingElement.scrollTo(0, 0); }, true);
 
 const saved = store.loadState();
 if (saved) {
