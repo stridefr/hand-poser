@@ -1,0 +1,89 @@
+{
+  "name": "hand-poser",
+  "productName": "Hand Poser",
+  "version": "1.0.0",
+  "description": "Pose a gorilla hand around your own 3D models: per-bone controls, fingertip IK, exact left/right mirroring and a model library.",
+  "author": {
+    "name": "stridefr"
+  },
+  "homepage": "https://github.com/stridefr/hand-poser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stridefr/hand-poser.git"
+  },
+  "main": "electron/main.cjs",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "start": "npm run build && node electron/launch.cjs",
+    "dist": "npm run build && electron-builder --publish never",
+    "release": "npm run build && electron-builder --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/jetbrains-mono": "^5.1.1",
+    "electron": "33.2.1",
+    "electron-builder": "^25.1.8",
+    "esbuild": "0.24.0",
+    "three": "0.169.0"
+  },
+  "build": {
+    "appId": "com.stridefr.handposer",
+    "productName": "Hand Poser",
+    "copyright": "Copyright © 2026 stridefr",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "app/**/*",
+      "electron/**/*",
+      "build/icon.png",
+      "package.json",
+      "!app/**/*.map"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "Hand-Poser-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Hand Poser",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Graphics",
+      "icon": "build/icon.png",
+      "artifactName": "Hand-Poser-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "stridefr",
+        "repo": "hand-poser",
+        "releaseType": "release"
+      }
+    ]
+  }
+}

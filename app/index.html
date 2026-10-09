@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' blob: data:; worker-src 'self' blob:">
+<title>Hand Poser</title>
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cursor" viewBox="0 0 24 24"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  <symbol id="i-axis" viewBox="0 0 24 24"><path d="M5 19V5M5 19h14M5 19l9-9"/><path d="M3 7l2-2 2 2M17 17l2 2-2 2"/></symbol>
+  <symbol id="i-magnet" viewBox="0 0 24 24"><path d="M6 3v7a6 6 0 0 0 12 0V3h-4v7a2 2 0 0 1-4 0V3z"/><path d="M6 7h4M14 7h4"/></symbol>
+  <symbol id="i-focus" viewBox="0 0 24 24"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l2-3h6l2 3h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+  <symbol id="i-flip" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M8 7l-5 5 5 5V7zM16 7l5 5-5 5V7z"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+  <symbol id="i-bone" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M7.8 7.8l8.4 8.4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l5 5v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v5h8M7 21v-7h10v7"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M7 15h10"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+</svg>
+
+<!-- ───────── app bar (= the window's title bar in the desktop app) ───────── -->
+<header id="appbar">
+  <button class="brand" id="homeBtn" title="Home: your models"><span class="logo"><i></i><i></i><i></i><i></i></span><b>Hand Poser</b></button>
+  <div class="vsep hide-sm"></div>
+  <button id="modelsBtn" title="Switch model"><span id="modelsBtnThumb"><svg class="i sm"><use href="#i-box"/></svg></span><span class="t"><small>Model</small><span id="modelsBtnName">Models</span></span><svg class="i sm" style="color:var(--muted)"><use href="#i-chev"/></svg></button>
+  <button class="btn violet" id="importTop" title="Import a 3D model (Ctrl+O)"><svg class="i sm"><use href="#i-plus"/></svg><span class="hide-sm">Import model</span></button>
+  <div class="grow"></div>
+  <div class="seg" title="Which hand you are editing (Tab)">
+    <button id="handL"><span class="hand-dot"></span>Left</button>
+    <button id="handR"><span class="hand-dot"></span>Right</button>
+  </div>
+  <label class="switch hide-sm" title="The hand you edit drives the other one, mirrored"><input type="checkbox" id="live"><span class="track"></span>Live mirror</label>
+  <div class="grow"></div>
+  <button id="updatePill" hidden><span class="d"></span><span id="updateText">Update ready</span></button>
+  <div class="row">
+    <button class="btn icon ghost" id="undo" title="Undo (Ctrl+Z)"><svg class="i"><use href="#i-undo"/></svg></button>
+    <button class="btn icon ghost" id="redo" title="Redo (Ctrl+Y)"><svg class="i"><use href="#i-redo"/></svg></button>
+  </div>
+  <button class="btn outline hide-md" id="paletteBtn" title="Search every action (Ctrl+K)" style="color:var(--muted);gap:10px;min-width:150px;justify-content:flex-start"><svg class="i sm"><use href="#i-search"/></svg><span style="flex:1;text-align:left">Search</span><span class="kbd">Ctrl K</span></button>
+  <button class="btn primary" id="exportTop" title="Download the pose as JSON"><svg class="i sm"><use href="#i-download"/></svg><span class="hide-sm">Export</span></button>
+  <button class="btn icon ghost" id="settingsBtn" title="Settings"><svg class="i"><use href="#i-gear"/></svg></button>
+  <button class="btn icon outline mtoggle" id="tRight" title="Inspector"><svg class="i"><use href="#i-sliders"/></svg></button>
+</header>
+
+<!-- ───────── viewport ───────── -->
+<main id="stage">
+  <div id="view"></div>
+  <div id="rail" class="float">
+    <button class="btn" id="toolSelect" title="Select (S): pick joints, fingertips and the object without a gizmo"><svg class="i"><use href="#i-cursor"/></svg><span class="k">S</span></button>
+    <button class="btn" id="toolMove" title="Move (W)"><svg class="i"><use href="#i-move"/></svg><span class="k">W</span></button>
+    <button class="btn" id="toolRotate" title="Rotate (E)"><svg class="i"><use href="#i-rotate"/></svg><span class="k">E</span></button>
+    <div class="hsep"></div>
+    <button class="btn" id="space" title="Gizmo space: local / world (Q)"><svg class="i sm"><use href="#i-axis"/></svg><span id="spaceLbl">Local</span></button>
+    <button class="btn" id="snap" title="Snap to 5° / 2.5 mm (X)"><svg class="i"><use href="#i-magnet"/></svg><span class="k">X</span></button>
+    <div class="hsep"></div>
+    <button class="btn" id="frameBtn" title="Frame the selection (F)"><svg class="i"><use href="#i-focus"/></svg><span class="k">F</span></button>
+    <button class="btn" id="shot" title="Save a screenshot (handles hidden)"><svg class="i"><use href="#i-camera"/></svg></button>
+  </div>
+  <div id="selChip" class="float" hidden><span class="d"></span><span id="selText"></span><button class="btn icon sm ghost" id="selClear" title="Deselect (Esc)"><svg class="i sm"><use href="#i-x"/></svg></button></div>
+  <div id="hint" class="float"><span><b>Drag</b> orbit</span><span><b>Right-drag</b> pan</span><span><b>Wheel</b> zoom</span></div>
+  <div id="views" class="float">
+    <button data-view="pov">First person</button><button data-view="front">Front</button><button data-view="back">Back</button>
+    <button data-view="top">Top</button><button data-view="thumb">Thumb side</button><button data-view="palm">Palm</button>
+  </div>
+</main>
+
+<!-- ───────── inspector ───────── -->
+<aside id="right">
+  <div id="tabs"><div class="seg full">
+    <button data-tab="pose" class="on"><svg class="i"><use href="#i-hand"/></svg>Pose</button>
+    <button data-tab="object"><svg class="i"><use href="#i-box"/></svg>Object</button>
+    <button data-tab="materials"><svg class="i"><use href="#i-image"/></svg>Materials</button>
+    <button data-tab="library"><svg class="i"><use href="#i-save"/></svg>Saved</button>
+  </div></div>
+  <div class="panes">
+
+    <!-- POSE -->
+    <section class="pane on" data-pane="pose">
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-bone"/></svg><span id="boneTitle">Nothing selected</span></h3>
+          <button class="btn sm ghost" id="boneReset">Reset</button></div>
+        <div class="bd">
+          <div id="bonePick"></div>
+          <div id="boneCtl">
+            <div class="ctl"><span class="lbl">Curl</span><button class="nud" data-bn="0-">−</button><input type="range" id="b0" step="0.5"><button class="nud" data-bn="0+">+</button><input type="number" id="b0n" step="1"></div>
+            <div class="ctl"><span class="lbl">Spread</span><button class="nud" data-bn="1-">−</button><input type="range" id="b1" step="0.5"><button class="nud" data-bn="1+">+</button><input type="number" id="b1n" step="1"></div>
+            <div class="ctl"><span class="lbl">Twist</span><button class="nud" data-bn="2-">−</button><input type="range" id="b2" step="0.5"><button class="nud" data-bn="2+">+</button><input type="number" id="b2n" step="1"></div>
+          </div>
+          <div class="row" style="justify-content:space-between">
+            <label class="switch"><input type="checkbox" id="limits" checked><span class="track"></span>Joint limits</label>
+            <div class="row"><span class="hint">Step</span><select id="boneStep" style="width:76px"><option value="1">1°</option><option value="2.5">2.5°</option><option value="5" selected>5°</option><option value="10">10°</option></select></div>
+          </div>
+          <p class="hint">Click a joint dot or a finger in the view to pick a bone. Drag the ball on a fingertip to bend the whole finger.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-sliders"/></svg>Fingers</h3><button class="btn sm ghost" id="handReset">Reset hand</button></div>
+        <div class="bd">
+          <div id="fingers"></div>
+          <div class="ctl" style="border-top:1px solid var(--line);padding-top:9px"><span class="lbl" style="color:var(--text);font-weight:600">All</span><input type="range" id="gripAll" min="-0.2" max="1" step="0.01"></div>
+          <div class="row"><button class="btn violet" id="gripAuto" title="Close every finger until it touches the object"><svg class="i sm"><use href="#i-spark"/></svg>Auto-grip object</button><button class="btn" id="relax" style="flex:none">Relax</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-grid"/></svg>Presets</h3><span class="hint">for the active hand</span></div>
+        <div class="bd"><div id="presets"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-flip"/></svg>Left ⇄ right</h3></div>
+        <div class="bd">
+          <div class="row"><button class="btn" id="copyRL">Right → left</button><button class="btn" id="copyLR">Left → right</button><button class="btn icon" id="swap" title="Swap hands"><svg class="i sm"><use href="#i-swap"/></svg></button></div>
+          <div class="two">
+            <label class="switch"><input type="checkbox" id="showR" checked><span class="track"></span>Right hand</label>
+            <label class="switch"><input type="checkbox" id="showL" checked><span class="track"></span>Left hand</label>
+          </div>
+          <p class="hint">The left hand is an exact mirror of the right one (bones, joint axes and the held object), so the thumb and palm always face the right way.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OBJECT -->
+    <section class="pane" data-pane="object">
+      <div class="card">
+        <div class="bd" style="padding-top:13px">
+          <div class="model-hero"><div class="th" id="heroThumb"></div><div class="nm"><span class="hint">Holding</span><b id="heroName">—</b><span id="objName"></span></div></div>
+          <div class="row"><button class="btn violet" id="import"><svg class="i sm"><use href="#i-plus"/></svg>Import model</button><button class="btn" id="openModels"><svg class="i sm"><use href="#i-layers"/></svg>My models</button></div>
+          <input type="file" id="file" multiple hidden>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-move"/></svg>Placement · <span id="objHand" style="color:var(--muted);font-weight:500">right</span>&nbsp;hand</h3><button class="btn sm ghost" id="objReset">Reset</button></div>
+        <div class="bd">
+          <div class="subhd">Position <span style="text-transform:none;letter-spacing:0;font-weight:500">cm</span></div>
+          <div class="ctl axis-x"><span class="lbl">Palm</span><button class="nud" data-nudge="p0-">−</button><input type="range" id="p0" min="-30" max="30" step="0.05"><button class="nud" data-nudge="p0+">+</button><input type="number" id="p0n" step="0.1"></div>
+          <div class="ctl axis-y"><span class="lbl">Up</span><button class="nud" data-nudge="p1-">−</button><input type="range" id="p1" min="-30" max="30" step="0.05"><button class="nud" data-nudge="p1+">+</button><input type="number" id="p1n" step="0.1"></div>
+          <div class="ctl axis-z"><span class="lbl">Thumb</span><button class="nud" data-nudge="p2-">−</button><input type="range" id="p2" min="-30" max="30" step="0.05"><button class="nud" data-nudge="p2+">+</button><input type="number" id="p2n" step="0.1"></div>
+          <div class="subhd">Rotation <span style="text-transform:none;letter-spacing:0;font-weight:500">degrees</span></div>
+          <div class="ctl axis-x"><span class="lbl">Pitch</span><button class="nud" data-nudge="r0-">−</button><input type="range" id="r0" min="-180" max="180" step="0.5"><button class="nud" data-nudge="r0+">+</button><input type="number" id="r0n" step="1"></div>
+          <div class="ctl axis-y"><span class="lbl">Yaw</span><button class="nud" data-nudge="r1-">−</button><input type="range" id="r1" min="-180" max="180" step="0.5"><button class="nud" data-nudge="r1+">+</button><input type="number" id="r1n" step="1"></div>
+          <div class="ctl axis-z"><span class="lbl">Roll</span><button class="nud" data-nudge="r2-">−</button><input type="range" id="r2" min="-180" max="180" step="0.5"><button class="nud" data-nudge="r2+">+</button><input type="number" id="r2n" step="1"></div>
+          <div class="two">
+            <label class="field"><span>Move step</span><select id="moveStep"><option value="0.1">1 mm</option><option value="0.25">2.5 mm</option><option value="0.5" selected>5 mm</option><option value="1">1 cm</option><option value="2">2 cm</option></select></label>
+            <label class="field"><span>Turn step</span><select id="rotStep"><option value="1">1°</option><option value="5" selected>5°</option><option value="15">15°</option><option value="45">45°</option><option value="90">90°</option></select></label>
+          </div>
+          <button class="btn outline" id="objSelect"><svg class="i sm"><use href="#i-move"/></svg>Put the gizmo on the object</button>
+          <p class="hint">Measured from the hand: out of the palm, toward the fingertips, toward the thumb. The −/+ buttons turn the object about its own axes.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-ruler"/></svg>Size &amp; pivot</h3><span id="dims"></span></div>
+        <div class="bd">
+          <div class="two">
+            <label class="field"><span>Units</span><select id="units"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></label>
+            <label class="field"><span>Pivot</span><select id="pivot"><option value="center">Bounds centre</option><option value="bottom">Bottom centre</option><option value="origin">Model origin</option></select></label>
+          </div>
+          <div class="ctl" id="fitRow"><span class="lbl">Fit size</span><input type="range" id="fitSize" min="2" max="60" step="0.5"><input type="number" id="fitSizeN" step="0.5"><span class="unit">cm</span></div>
+          <div class="ctl"><span class="lbl">Scale</span><input type="range" id="scale" min="0.1" max="3" step="0.01"><input type="number" id="scaleN" step="0.01"><span class="unit">×</span></div>
+          <label class="switch"><input type="checkbox" id="objShow" checked><span class="track"></span>Show object</label>
+          <label class="switch"><input type="checkbox" id="mirrorGeo"><span class="track"></span><span>Left-handed copy in the left hand<span class="sub">Off: the same real object, held the mirrored way</span></span></label>
+        </div>
+      </div>
+
+      <div class="card collapsible" data-card="viewport">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-eye"/></svg>Viewport</h3><svg class="i sm chev"><use href="#i-chev"/></svg></div>
+        <div class="bd">
+          <div class="row"><span class="hint" style="flex:1;font-size:13px;color:var(--text2)">Fur colour</span><input type="color" id="fur" value="#a8243a"><button class="btn sm" id="furTex">Texture</button></div>
+          <label class="switch"><input type="checkbox" id="showJoints" checked><span class="track"></span>Joint handles</label>
+          <label class="switch"><input type="checkbox" id="showIK" checked><span class="track"></span>Fingertip IK handles</label>
+          <label class="switch"><input type="checkbox" id="xray"><span class="track"></span>See-through hand</label>
+          <label class="switch"><input type="checkbox" id="showGrid" checked><span class="track"></span>Floor grid</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATERIALS -->
+    <section class="pane" data-pane="materials">
+      <p class="pane-intro">The surfaces of <b id="matModel" style="color:var(--text)">this model</b>. Give any of them a colour or image textures. The model's own UVs are used.</p>
+      <div id="missingBox" class="notice" hidden><svg class="i sm"><use href="#i-alert"/></svg><div><span id="missingText"></span><br><button class="btn sm" id="texAdd2" style="margin-top:8px"><svg class="i sm"><use href="#i-upload"/></svg>Add the missing files…</button></div></div>
+      <div class="row"><button class="btn violet" id="texAdd"><svg class="i sm"><use href="#i-upload"/></svg>Add texture files…</button><button class="btn" id="texAll" title="Use one image as the base colour of every material">One image for all</button></div>
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-image"/></svg>Materials<span class="badge count" id="matCount">0</span></h3></div>
+        <div class="bd">
+          <div id="mats"></div>
+          <p class="hint" id="noUV" hidden>This model has no UV coordinates, so image textures can't show on it. Colours still work.</p>
+        </div>
+      </div>
+      <div class="notice info"><svg class="i sm"><use href="#i-info"/></svg><span>Drop images anywhere on the window to add them. Files with the names the model asks for are linked automatically. Textures you add are saved with the model.</span></div>
+      <input type="file" id="texFile" accept="image/*,.tga" multiple hidden>
+      <input type="file" id="slotFile" accept="image/*" hidden>
+    </section>
+
+    <!-- SAVED -->
+    <section class="pane" data-pane="library">
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-save"/></svg>Saved poses<span class="badge count" id="libCount">0</span></h3></div>
+        <div class="bd">
+          <p class="hint">Saved with <b id="libModel" style="color:var(--text2)"></b>. Each model keeps its own list.</p>
+          <div class="row"><input type="text" id="poseName" placeholder="Name this pose…" style="flex:1"><button class="btn primary" id="poseSave" style="flex:none"><svg class="i sm"><use href="#i-plus"/></svg>Save</button></div>
+          <div id="lib"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-download"/></svg>Export</h3></div>
+        <div class="bd">
+          <div class="row"><button class="btn" id="exportJson"><svg class="i sm"><use href="#i-download"/></svg>Pose JSON</button><button class="btn" id="importJson"><svg class="i sm"><use href="#i-upload"/></svg>Load JSON</button></div>
+          <button class="btn outline" id="copyUnity" title="Right-hand pose in Unity hand-bone space">Copy Unity text</button>
+          <input type="file" id="jsonFile" accept=".json,application/json" hidden>
+        </div>
+      </div>
+      <div class="card collapsible closed" data-card="keys">
+        <div class="hd"><h3><svg class="i sm"><use href="#i-keyboard"/></svg>Keyboard shortcuts</h3><svg class="i sm chev"><use href="#i-chev"/></svg></div>
+        <div class="bd"><div class="keys">
+          <kbd>Ctrl K</kbd><span>Search every action</span><kbd>Ctrl O</kbd><span>Import a model</span>
+          <kbd>S W E</kbd><span>Select · move · rotate</span><kbd>Q</kbd><span>Local / world gizmo</span><kbd>X</kbd><span>Snap</span>
+          <kbd>Tab</kbd><span>Switch hand</span><kbd>M</kbd><span>Mirror onto the other hand</span>
+          <kbd>F</kbd><span>Frame selection</span><kbd>H</kbd><span>Home</span><kbd>Esc</kbd><span>Deselect / close</span>
+          <kbd>Ctrl Z / Y</kbd><span>Undo / redo</span>
+        </div></div>
+      </div>
+    </section>
+  </div>
+</aside>
+
+<!-- ───────── status bar ───────── -->
+<footer id="statusbar">
+  <span class="dot"></span><span id="status"></span>
+  <span class="sb hide-sm"><svg class="i sm"><use href="#i-hand"/></svg><span id="sbHand">Right hand</span></span>
+  <span class="sb hide-sm"><svg class="i sm"><use href="#i-box"/></svg><span id="sbModel">—</span></span>
+  <button class="sb hide-sm" id="sbVersion" title="About and updates">v—</button>
+</footer>
+
+<!-- ───────── home: model library ───────── -->
+<div id="models" class="home" hidden>
+  <div class="home-in">
+    <div class="home-head">
+      <div style="flex:1"><h1>Your models</h1><p>Pick a model to pose, or import a new one. Every model keeps its own poses, placement, size and textures.</p></div>
+      <button class="btn outline" id="mClose"><svg class="i sm"><use href="#i-hand"/></svg>Back to the editor</button>
+    </div>
+    <div class="hero">
+      <div class="dropzone" id="homeDrop" tabindex="0" role="button" aria-label="Import a model">
+        <div class="bubble"><svg class="i lg"><use href="#i-upload"/></svg></div>
+        <h2>Import a 3D model</h2>
+        <p>Drop your model here, together with its textures, or click to choose files. You'll see a preview before it's added.</p>
+        <div class="formats"><span>FBX</span><span>OBJ + MTL</span><span>glTF</span><span>GLB</span><span>DAE</span><span>STL</span><span>PLY</span><span>3MF</span><span>3DS</span></div>
+        <button class="btn violet lg" id="mImport" style="margin-top:6px"><svg class="i sm"><use href="#i-plus"/></svg>Choose files…</button>
+      </div>
+      <div class="steps">
+        <h3>Getting started</h3>
+        <div class="step"><span class="n">1</span><div><b>Import your model</b>Its textures come along if you select them too.</div></div>
+        <div class="step"><span class="n">2</span><div><b>Pose the hand</b>Drag a fingertip ball, or pick a joint and use the sliders.</div></div>
+        <div class="step"><span class="n">3</span><div><b>Mirror it</b>Copy the pose to the other hand, or turn on Live mirror.</div></div>
+        <div class="step"><span class="n">4</span><div><b>Save and export</b>Save poses per model, then export JSON or Unity text.</div></div>
+      </div>
+    </div>
+    <div class="section-h">Imported <span class="badge count" id="mImpCount">0</span></div>
+    <div class="cards" id="mImported"></div>
+    <div class="section-h">Built-in objects</div>
+    <div class="cards" id="mBuiltin"></div>
+  </div>
+</div>
+
+<!-- ───────── import dialog ───────── -->
+<div id="importDlg" class="modal" hidden>
+  <div class="sheet">
+    <div class="sheethead"><h1><svg class="i lg" style="color:var(--accent2)"><use href="#i-upload"/></svg>Import a model</h1><button class="btn icon ghost" id="impClose" title="Cancel (Esc)"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="imp">
+      <div>
+        <div class="dropzone" id="impDrop" tabindex="0" role="button">
+          <div class="bubble" style="width:48px;height:48px;border-radius:14px"><svg class="i"><use href="#i-file"/></svg></div>
+          <h2>Drop files or click to browse</h2>
+          <p>The model plus any textures, .mtl or .bin files that go with it.</p>
+        </div>
+        <input type="file" id="impFile" multiple hidden>
+        <div class="subhd">Files <span id="impCount" style="text-transform:none;letter-spacing:0"></span></div>
+        <div id="impFiles"><p class="hint">No files yet.</p></div>
+      </div>
+      <div>
+        <div id="impPreview"><div class="ph" id="impPh">A preview appears here.</div></div>
+        <div id="impStats"></div>
+        <label class="field"><span>Name</span><input type="text" id="impName" placeholder="Model name"></label>
+        <label class="field"><span>Size</span><select id="impUnits"><option value="fit">Auto-fit to hand size (15 cm)</option><option value="m">Real size: metres</option><option value="cm">Real size: centimetres</option><option value="mm">Real size: millimetres</option><option value="in">Real size: inches</option><option value="ft">Real size: feet</option></select></label>
+        <p class="hint">You can change size, pivot and textures any time after importing.</p>
+      </div>
+    </div>
+    <div class="sheetfoot"><span class="hint" id="impMsg" style="flex:1"></span><button class="btn ghost" id="impCancel">Cancel</button><button class="btn violet" id="impOk" disabled><svg class="i sm"><use href="#i-check"/></svg>Add to my models</button></div>
+  </div>
+</div>
+
+<!-- ───────── settings ───────── -->
+<div id="settingsDlg" class="modal" hidden>
+  <div class="sheet">
+    <div class="sheethead"><h1><svg class="i lg" style="color:var(--muted)"><use href="#i-gear"/></svg>Settings</h1><button class="btn icon ghost" id="setClose" title="Close (Esc)"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="settings">
+      <nav class="snav">
+        <button data-spane="general" class="on"><svg class="i sm"><use href="#i-sliders"/></svg>General</button>
+        <button data-spane="display"><svg class="i sm"><use href="#i-monitor"/></svg>Display</button>
+        <button data-spane="updates"><svg class="i sm"><use href="#i-refresh"/></svg>Updates</button>
+        <button data-spane="data"><svg class="i sm"><use href="#i-trash"/></svg>Data</button>
+        <button data-spane="about"><svg class="i sm"><use href="#i-info"/></svg>About</button>
+      </nav>
+      <div class="spanes">
+        <section class="spane on" data-spane="general">
+          <h2>General</h2>
+          <label class="srow switch"><span class="lab"><b>Open on the Home screen</b><span>Show your models when the app starts.</span></span><input type="checkbox" id="setHome"><span class="track"></span></label>
+          <label class="srow switch"><span class="lab"><b>Auto-grip new models</b><span>Close the fingers onto a model the first time it opens.</span></span><input type="checkbox" id="setGrip"><span class="track"></span></label>
+          <div class="srow"><span class="lab"><b>Default size for imports</b><span>Pre-selected in the import window.</span></span><select id="setUnits" style="width:180px"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></div>
+        </section>
+        <section class="spane" data-spane="display">
+          <h2>Display</h2>
+          <div class="srow"><span class="lab"><b>Interface size</b><span id="zoomHint">Makes text and controls bigger or smaller.</span></span><div class="seg" id="setZoom"><button data-z="0.9">S</button><button data-z="1">M</button><button data-z="1.1">L</button><button data-z="1.25">XL</button></div></div>
+          <label class="srow switch"><span class="lab"><b>Viewport hints</b><span>The orbit / pan / zoom reminder in the corner.</span></span><input type="checkbox" id="setHints"><span class="track"></span></label>
+        </section>
+        <section class="spane" data-spane="updates">
+          <h2>Updates</h2>
+          <div id="updStatus"><span class="spinner" id="updSpin" hidden></span><span id="updText">—</span></div>
+          <div class="row" style="justify-content:flex-start"><button class="btn" id="updCheck" style="flex:none"><svg class="i sm"><use href="#i-refresh"/></svg>Check for updates</button><button class="btn violet" id="updInstall" style="flex:none" hidden>Restart and update</button></div>
+          <p class="hint">The desktop app checks GitHub for new versions when it starts and every few hours, downloads them in the background, and installs them the next time it closes.</p>
+        </section>
+        <section class="spane" data-spane="data">
+          <h2>Data</h2>
+          <p class="hint">Models, textures, poses and settings are stored on this computer only.</p>
+          <div class="srow"><span class="lab"><b>Reset everything</b><span>Deletes all imported models, textures, saved poses and settings.</span></span><button class="btn danger" id="resetAll"><svg class="i sm"><use href="#i-trash"/></svg>Reset…</button></div>
+        </section>
+        <section class="spane" data-spane="about">
+          <div class="about-logo"><img src="icon.png" alt=""><div><b>Hand Poser</b><span class="hint" id="aboutVer">Version —</span></div></div>
+          <p class="hint" style="font-size:13.5px;color:var(--dim)">Pose a gorilla hand around your own 3D models: per-bone controls, fingertip IK, exact left/right mirroring, per-model saved poses and textures.</p>
+          <div class="row" style="justify-content:flex-start"><a class="btn outline" id="ghLink" href="https://github.com/stridefr/hand-poser" target="_blank" rel="noopener" style="flex:none"><svg class="i sm"><use href="#i-link"/></svg>GitHub</a><a class="btn outline" id="relLink" href="https://github.com/stridefr/hand-poser/releases" target="_blank" rel="noopener" style="flex:none">Release notes</a></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── command palette ───────── -->
+<div id="palette" class="modal" hidden>
+  <div class="sheet">
+    <div class="search"><svg class="i"><use href="#i-search"/></svg><input type="text" id="palInput" placeholder="Type a command, preset, view or model…" autocomplete="off"><span class="kbd">Esc</span></div>
+    <div id="palList"></div>
+    <div class="palfoot"><span><span class="kbd">↑</span> <span class="kbd">↓</span> move</span><span><span class="kbd">Enter</span> run</span></div>
+  </div>
+</div>
+
+<div id="toast"><span class="ic"><svg class="i sm ok-i"><use href="#i-check"/></svg><svg class="i sm err-i"><use href="#i-alert"/></svg></span><span id="toastText"></span></div>
+<div id="drop"><div class="box"><svg class="i"><use href="#i-upload"/></svg><b>Drop to import</b><span class="hint">A model with its textures, images for the current model, or a pose JSON</span></div></div>
+
+<script src="hand_data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

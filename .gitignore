@@ -1,0 +1,8 @@
+node_modules/
+release/
+app/app.js
+app/*.map
+*.log
+.DS_Store
+# the original single-file poser embeds Garry's Mod props marked "local use only": never publish it
+hand_poser.html
