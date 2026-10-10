@@ -51,211 +51,226 @@
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
   <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
   <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-chevr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-paste" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></symbol>
+  <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.5"/><path d="M5 8l7 1.5L19 8M12 9.5V14l-3 6M12 14l3 6"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="10" r="1.3"/><circle cx="12" cy="7.5" r="1.3"/><circle cx="16" cy="10" r="1.3"/><path d="M12 21a2.5 2.5 0 0 1 0-5h1.5a2.5 2.5 0 0 0 2.5-2.5"/></symbol>
 </svg>
 
-<!-- ───────── app bar (= the window's title bar in the desktop app) ───────── -->
-<header id="appbar">
-  <button class="brand" id="homeBtn" title="Home: your models"><span class="logo"><i></i><i></i><i></i><i></i></span><b>Hand Poser</b></button>
-  <div class="vsep hide-sm"></div>
-  <button id="modelsBtn" title="Switch model"><span id="modelsBtnThumb"><svg class="i sm"><use href="#i-box"/></svg></span><span class="t"><small>Model</small><span id="modelsBtnName">Models</span></span><svg class="i sm" style="color:var(--muted)"><use href="#i-chev"/></svg></button>
-  <button class="btn violet" id="importTop" title="Import a 3D model (Ctrl+O)"><svg class="i sm"><use href="#i-plus"/></svg><span class="hide-sm">Import model</span></button>
-  <div class="grow"></div>
-  <div class="seg" title="Which hand you are editing (Tab)">
-    <button id="handL"><span class="hand-dot"></span>Left</button>
-    <button id="handR"><span class="hand-dot"></span>Right</button>
+<!-- ───────── splash ───────── -->
+<div id="splash" role="status" aria-label="Loading Hand Poser">
+  <div class="in">
+    <div class="sq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="name">Hand Poser</div>
+    <div class="prog"><b id="splashBar"></b></div>
+    <div class="ver" id="splashVer">Loading your models</div>
   </div>
-  <label class="switch hide-sm" title="The hand you edit drives the other one, mirrored"><input type="checkbox" id="live"><span class="track"></span>Live mirror</label>
-  <div class="grow"></div>
-  <button id="updatePill" hidden><span class="d"></span><span id="updateText">Update ready</span></button>
-  <div class="row">
-    <button class="btn icon ghost" id="undo" title="Undo (Ctrl+Z)"><svg class="i"><use href="#i-undo"/></svg></button>
-    <button class="btn icon ghost" id="redo" title="Redo (Ctrl+Y)"><svg class="i"><use href="#i-redo"/></svg></button>
+</div>
+
+<!-- ───────── title bar ───────── -->
+<header id="titlebar">
+  <button class="brandbtn" id="homeBtn" title="Model library (H)" aria-label="Model library"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+  <nav class="menus" id="menus" aria-label="Menu bar">
+    <button data-menu="file" aria-haspopup="menu">File</button>
+    <button data-menu="edit" aria-haspopup="menu">Edit</button>
+    <button data-menu="pose" aria-haspopup="menu">Pose</button>
+    <button data-menu="view" aria-haspopup="menu">View</button>
+    <button data-menu="help" aria-haspopup="menu">Help</button>
+  </nav>
+  <button id="modelsBtn" title="Model library (H)"><span id="modelsBtnThumb"><svg class="i xs"><use href="#i-box"/></svg></span><span id="modelsBtnName">Model</span><span id="modelsBtnPoses"></span><svg class="i xs" style="color:var(--tx3)"><use href="#i-chev"/></svg></button>
+  <div class="tbmid">
+    <div class="seg" role="radiogroup" aria-label="Hand you are editing (Tab)">
+      <button id="handL" role="radio">Left</button>
+      <button id="handR" role="radio">Right</button>
+    </div>
+    <label class="sw swl" title="The hand you edit drives the other one, mirrored"><input type="checkbox" id="live"><span class="tr"></span><span>Live mirror</span></label>
   </div>
-  <button class="btn outline hide-md" id="paletteBtn" title="Search every action (Ctrl+K)" style="color:var(--muted);gap:10px;min-width:150px;justify-content:flex-start"><svg class="i sm"><use href="#i-search"/></svg><span style="flex:1;text-align:left">Search</span><span class="kbd">Ctrl K</span></button>
-  <button class="btn primary" id="exportTop" title="Download the pose as JSON"><svg class="i sm"><use href="#i-download"/></svg><span class="hide-sm">Export</span></button>
-  <button class="btn icon ghost" id="settingsBtn" title="Settings"><svg class="i"><use href="#i-gear"/></svg></button>
-  <button class="btn icon outline mtoggle" id="tRight" title="Inspector"><svg class="i"><use href="#i-sliders"/></svg></button>
+  <div class="tbr">
+    <button class="ib" id="undo" title="Undo (Ctrl+Z)" aria-label="Undo"><svg class="i"><use href="#i-undo"/></svg></button>
+    <button class="ib" id="redo" title="Redo (Ctrl+Y)" aria-label="Redo"><svg class="i"><use href="#i-redo"/></svg></button>
+    <button id="paletteBtn" title="Search actions (Ctrl+K)" aria-label="Search actions"><svg class="i s"><use href="#i-search"/></svg><span class="t">Search actions</span><span class="kbd">Ctrl K</span></button>
+    <button class="btn pri" id="exportTop" title="Export the pose as JSON (Ctrl+E)"><svg class="i s"><use href="#i-download"/></svg><span>Export</span></button>
+    <button class="ib" id="tRight" aria-label="Properties panel"><svg class="i"><use href="#i-sliders"/></svg></button>
+  </div>
 </header>
 
-<!-- ───────── viewport ───────── -->
-<main id="stage">
-  <div id="view"></div>
-  <div id="rail" class="float">
-    <button class="btn" id="toolSelect" title="Select (S): pick joints, fingertips and the object without a gizmo"><svg class="i"><use href="#i-cursor"/></svg><span class="k">S</span></button>
-    <button class="btn" id="toolMove" title="Move (W)"><svg class="i"><use href="#i-move"/></svg><span class="k">W</span></button>
-    <button class="btn" id="toolRotate" title="Rotate (E)"><svg class="i"><use href="#i-rotate"/></svg><span class="k">E</span></button>
-    <div class="hsep"></div>
-    <button class="btn" id="space" title="Gizmo space: local / world (Q)"><svg class="i sm"><use href="#i-axis"/></svg><span id="spaceLbl">Local</span></button>
-    <button class="btn" id="snap" title="Snap to 5° / 2.5 mm (X)"><svg class="i"><use href="#i-magnet"/></svg><span class="k">X</span></button>
-    <div class="hsep"></div>
-    <button class="btn" id="frameBtn" title="Frame the selection (F)"><svg class="i"><use href="#i-focus"/></svg><span class="k">F</span></button>
-    <button class="btn" id="shot" title="Save a screenshot (handles hidden)"><svg class="i"><use href="#i-camera"/></svg></button>
+<!-- ───────── outliner ───────── -->
+<aside id="outliner" aria-label="Scene outliner">
+  <div class="ph">Scene<span class="g"></span><button class="ib" id="olCollapse" style="width:26px;height:26px" title="Collapse all" aria-label="Collapse all"><svg class="i xs"><use href="#i-list"/></svg></button><button class="ib" id="olClose" style="width:26px;height:26px" title="Close" aria-label="Close outliner" hidden><svg class="i xs"><use href="#i-x"/></svg></button></div>
+  <input type="search" id="olFilter" placeholder="Filter joints…" aria-label="Filter joints" autocomplete="off">
+  <div id="treeWrap"><div id="treeHl" aria-hidden="true"></div><div id="tree" role="tree" aria-label="Hands, fingers and joints"></div></div>
+  <div class="split" id="split" aria-hidden="true"></div>
+  <div id="posesBox">
+    <div class="ph">Saved poses <span class="cnt" id="libCount">0</span><span class="g"></span><button class="act" id="poseQuick" title="Save the current pose (Ctrl+S)">+ Save</button></div>
+    <div id="lib" role="list" aria-label="Saved poses"></div>
   </div>
-  <div id="selChip" class="float" hidden><span class="d"></span><span id="selText"></span><button class="btn icon sm ghost" id="selClear" title="Deselect (Esc)"><svg class="i sm"><use href="#i-x"/></svg></button></div>
-  <div id="hint" class="float"><span><b>Drag</b> orbit</span><span><b>Right-drag</b> pan</span><span><b>Wheel</b> zoom</span></div>
-  <div id="views" class="float">
-    <button data-view="pov">First person</button><button data-view="front">Front</button><button data-view="back">Back</button>
-    <button data-view="top">Top</button><button data-view="thumb">Thumb side</button><button data-view="palm">Palm</button>
+  <div id="olRail">
+    <button class="ib" id="olOpen" title="Scene outliner" aria-label="Open the scene outliner"><svg class="i"><use href="#i-list"/></svg></button>
+    <button class="ib" id="olPoses" title="Saved poses" aria-label="Saved poses"><svg class="i"><use href="#i-save"/></svg></button>
+  </div>
+</aside>
+
+<!-- ───────── viewport ───────── -->
+<main id="stage" aria-label="Viewport">
+  <div class="vph" role="toolbar" aria-label="Viewport tools">
+    <button class="tool" id="toolSelect" title="Select (S): pick without a gizmo" aria-label="Select tool"><svg class="i"><use href="#i-cursor"/></svg><span class="k">S</span></button>
+    <button class="tool" id="toolMove" title="Move (W / G)" aria-label="Move tool"><svg class="i"><use href="#i-move"/></svg><span class="k">W</span></button>
+    <button class="tool" id="toolRotate" title="Rotate (E / R)" aria-label="Rotate tool"><svg class="i"><use href="#i-rotate"/></svg><span class="k">E</span></button>
+    <span class="vsep"></span>
+    <button class="chip" id="space" title="Gizmo space (Q)"><svg class="i xs"><use href="#i-axis"/></svg><span id="spaceLbl">Local</span></button>
+    <button class="chip" id="snap" title="Snap to 5° / 2.5 mm (X)"><svg class="i xs"><use href="#i-magnet"/></svg>Snap</button>
+    <span style="flex:1"></span>
+    <button class="chip" data-menu="camera" aria-haspopup="menu"><svg class="i xs"><use href="#i-camera"/></svg><span id="camLbl">Perspective</span><svg class="i xs"><use href="#i-chev"/></svg></button>
+    <button class="chip" data-menu="overlays" aria-haspopup="menu"><svg class="i xs"><use href="#i-eye"/></svg>Overlays<svg class="i xs"><use href="#i-chev"/></svg></button>
+    <button class="tool" id="frameBtn" title="Frame the selection (F)" aria-label="Frame selection"><svg class="i"><use href="#i-focus"/></svg><span class="k">F</span></button>
+  </div>
+  <div id="view">
+    <div id="camchips" class="ov" role="group" aria-label="Camera">
+      <button data-view="pov" title="First person (Numpad 0)">Persp</button><button data-view="front" title="Front (Numpad 1)">Front</button><button data-view="thumb" title="Thumb side (Numpad 3)">Side</button><button data-view="top" title="Top (Numpad 7)">Top</button><button data-view="palm" title="Palm of the active hand">Palm</button>
+    </div>
+    <div id="axes" class="ov" aria-hidden="true"><svg viewBox="-40 -40 80 80"><g id="axesG"></g></svg></div>
+    <div id="vlabel" class="ov" hidden><span class="d" id="vlDot"></span><span id="vlText"></span><button class="ib" id="selClear" style="width:24px;height:24px" title="Deselect (Esc)" aria-label="Deselect"><svg class="i xs"><use href="#i-x"/></svg></button></div>
+    <div id="vload" hidden><div class="bx"><div><span class="spin"></span>&nbsp; <span id="vloadText">Opening…</span></div><div class="ibar"><b></b></div></div></div>
   </div>
 </main>
 
-<!-- ───────── inspector ───────── -->
-<aside id="right">
-  <div id="tabs"><div class="seg full">
-    <button data-tab="pose" class="on"><svg class="i"><use href="#i-hand"/></svg>Pose</button>
-    <button data-tab="object"><svg class="i"><use href="#i-box"/></svg>Object</button>
-    <button data-tab="materials"><svg class="i"><use href="#i-image"/></svg>Materials</button>
-    <button data-tab="library"><svg class="i"><use href="#i-save"/></svg>Saved</button>
-  </div></div>
-  <div class="panes">
+<!-- ───────── properties ───────── -->
+<aside id="props" aria-label="Properties">
+  <div class="ptabs" role="tablist" aria-orientation="vertical" aria-label="Properties">
+    <span class="ind" id="ptabInd" aria-hidden="true"></span>
+    <button class="ptab" role="tab" data-tab="bone"><svg class="i"><use href="#i-bone"/></svg>Bone</button>
+    <button class="ptab" role="tab" data-tab="hand"><svg class="i"><use href="#i-hand"/></svg>Hand</button>
+    <button class="ptab" role="tab" data-tab="object"><svg class="i"><use href="#i-box"/></svg>Object</button>
+    <button class="ptab" role="tab" data-tab="material"><svg class="i"><use href="#i-image"/></svg>Material</button>
+    <button class="ptab" role="tab" data-tab="export"><svg class="i"><use href="#i-download"/></svg>Export</button>
+  </div>
+  <div class="pbody">
 
-    <!-- POSE -->
-    <section class="pane on" data-pane="pose">
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-bone"/></svg><span id="boneTitle">Nothing selected</span></h3>
-          <button class="btn sm ghost" id="boneReset">Reset</button></div>
-        <div class="bd">
-          <div id="bonePick"></div>
-          <div id="boneCtl">
-            <div class="ctl"><span class="lbl">Curl</span><button class="nud" data-bn="0-">−</button><input type="range" id="b0" step="0.5"><button class="nud" data-bn="0+">+</button><input type="number" id="b0n" step="1"></div>
-            <div class="ctl"><span class="lbl">Spread</span><button class="nud" data-bn="1-">−</button><input type="range" id="b1" step="0.5"><button class="nud" data-bn="1+">+</button><input type="number" id="b1n" step="1"></div>
-            <div class="ctl"><span class="lbl">Twist</span><button class="nud" data-bn="2-">−</button><input type="range" id="b2" step="0.5"><button class="nud" data-bn="2+">+</button><input type="number" id="b2n" step="1"></div>
+    <!-- BONE -->
+    <section class="pane" data-pane="bone" role="tabpanel">
+      <div id="boneEmpty" class="empty"><svg class="i xl"><use href="#i-bone"/></svg><b>No joint selected</b><span>Pick a joint in the Scene list, click a joint dot or a finger in the view, or drag a fingertip ring.</span></div>
+      <div id="boneBody">
+        <div class="crumb"><div><small id="boneCrumb">Right hand › Index</small><b id="boneTitle">Index 2</b></div><button class="btn ghost sm" id="boneReset" title="Reset this joint"><svg class="i xs"><use href="#i-refresh"/></svg>Reset</button></div>
+        <div class="sec" id="rotSec">
+          <h4>Rotation <span class="r">degrees</span></h4>
+          <div class="row"><span class="lb">Curl</span><button class="nud" data-bn="0-" aria-label="Less curl">−</button><div class="slw lbl" data-unit="°"><input type="range" id="b0" step="0.5" aria-label="Curl"><span class="rng" id="b0lo"></span><span class="rng r" id="b0hi"></span></div><button class="nud" data-bn="0+" aria-label="More curl">+</button><input type="number" id="b0n" step="1" aria-label="Curl degrees"></div>
+          <div class="row"><span class="lb">Spread</span><button class="nud" data-bn="1-" aria-label="Less spread">−</button><div class="slw lbl" data-unit="°"><input type="range" id="b1" step="0.5" aria-label="Spread"><span class="rng" id="b1lo"></span><span class="rng r" id="b1hi"></span></div><button class="nud" data-bn="1+" aria-label="More spread">+</button><input type="number" id="b1n" step="1" aria-label="Spread degrees"></div>
+          <div class="row"><span class="lb">Twist</span><button class="nud" data-bn="2-" aria-label="Less twist">−</button><div class="slw lbl" data-unit="°"><input type="range" id="b2" step="0.5" aria-label="Twist"><span class="rng" id="b2lo"></span><span class="rng r" id="b2hi"></span></div><button class="nud" data-bn="2+" aria-label="More twist">+</button><input type="number" id="b2n" step="1" aria-label="Twist degrees"></div>
+          <div class="two" style="margin-top:4px">
+            <label class="field"><span>Step</span><select id="boneStep"><option value="1">1°</option><option value="2.5">2.5°</option><option value="5" selected>5°</option><option value="10">10°</option></select></label>
+            <div class="field"><span>Joint limits</span><label class="sw" style="height:var(--ctl)"><input type="checkbox" id="limits" checked><span class="tr"></span><span>On</span></label></div>
           </div>
-          <div class="row" style="justify-content:space-between">
-            <label class="switch"><input type="checkbox" id="limits" checked><span class="track"></span>Joint limits</label>
-            <div class="row"><span class="hint">Step</span><select id="boneStep" style="width:76px"><option value="1">1°</option><option value="2.5">2.5°</option><option value="5" selected>5°</option><option value="10">10°</option></select></div>
-          </div>
-          <p class="hint">Click a joint dot or a finger in the view to pick a bone. Drag the ball on a fingertip to bend the whole finger.</p>
+        </div>
+        <div class="sec fold" id="wfSec">
+          <h4><svg class="i xs chev"><use href="#i-chev"/></svg>Whole finger · <span id="wfLt"></span><span id="wfName"></span></h4>
+          <div class="row"><span class="lb">Curl</span><div class="slw" data-unit=""><input type="range" id="wfCurl" min="-0.3" max="1.15" step="0.01" aria-label="Whole finger curl"></div><input type="number" id="wfCurlN" step="0.05" aria-label="Whole finger curl value"></div>
+          <div class="row"><span class="lb">Spread</span><div class="slw" data-unit="°"><input type="range" id="wfSpread" step="0.5" aria-label="Whole finger spread"></div><input type="number" id="wfSpreadN" step="1" aria-label="Whole finger spread degrees"></div>
+          <div class="two"><button class="btn" id="wfGrip"><svg class="i xs"><use href="#i-spark"/></svg>Grip object</button><button class="btn" id="wfStraight">Straighten</button></div>
+        </div>
+        <div class="sec fold" id="ikSec">
+          <h4><svg class="i xs chev"><use href="#i-chev"/></svg>Fingertip IK</h4>
+          <label class="sw right"><input type="checkbox" id="showIK"><span class="tr"></span><span class="lab">Fingertip rings<small>Drag a ring and the whole finger bends naturally</small></span></label>
+          <button class="btn out" id="ikSelect"><svg class="i xs"><use href="#i-move"/></svg>Select this fingertip</button>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-sliders"/></svg>Fingers</h3><button class="btn sm ghost" id="handReset">Reset hand</button></div>
-        <div class="bd">
-          <div id="fingers"></div>
-          <div class="ctl" style="border-top:1px solid var(--line);padding-top:9px"><span class="lbl" style="color:var(--text);font-weight:600">All</span><input type="range" id="gripAll" min="-0.2" max="1" step="0.01"></div>
-          <div class="row"><button class="btn violet" id="gripAuto" title="Close every finger until it touches the object"><svg class="i sm"><use href="#i-spark"/></svg>Auto-grip object</button><button class="btn" id="relax" style="flex:none">Relax</button></div>
-        </div>
+    <!-- HAND -->
+    <section class="pane" data-pane="hand" role="tabpanel">
+      <div class="crumb"><div><small>Hand</small><b id="handTitle">Right hand</b></div><button class="btn ghost sm" id="handReset" title="Straighten every finger"><svg class="i xs"><use href="#i-refresh"/></svg>Reset hand</button></div>
+      <div class="sec">
+        <h4>Fingers <span class="r">curl · spread</span></h4>
+        <div class="frow" id="fingers"></div>
+        <div class="row" style="border-top:1px solid var(--line);padding-top:9px"><span class="lb" style="font-weight:600;color:var(--tx);width:auto;margin-right:6px">All fingers</span><div class="slw" data-unit=""><input type="range" id="gripAll" min="-0.2" max="1" step="0.01" aria-label="All fingers curl" style="--fill:#e4e4e7"></div><input type="number" id="gripAllN" step="0.05" aria-label="All fingers curl value"></div>
+        <button class="btn acc lg" id="gripAuto"><svg class="i s"><use href="#i-spark"/></svg>Auto-grip the object</button>
       </div>
-
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-grid"/></svg>Presets</h3><span class="hint">for the active hand</span></div>
-        <div class="bd"><div id="presets"></div></div>
+      <div class="sec">
+        <h4>Presets <span class="r" id="presetFor">for the right hand</span></h4>
+        <div class="tiles" id="presets"></div>
       </div>
-
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-flip"/></svg>Left ⇄ right</h3></div>
-        <div class="bd">
-          <div class="row"><button class="btn" id="copyRL">Right → left</button><button class="btn" id="copyLR">Left → right</button><button class="btn icon" id="swap" title="Swap hands"><svg class="i sm"><use href="#i-swap"/></svg></button></div>
-          <div class="two">
-            <label class="switch"><input type="checkbox" id="showR" checked><span class="track"></span>Right hand</label>
-            <label class="switch"><input type="checkbox" id="showL" checked><span class="track"></span>Left hand</label>
-          </div>
-          <p class="hint">The left hand is an exact mirror of the right one (bones, joint axes and the held object), so the thumb and palm always face the right way.</p>
-        </div>
+      <div class="sec">
+        <h4>Left ⇄ right</h4>
+        <div class="row"><button class="btn" id="copyRL" style="flex:1"><svg class="i xs"><use href="#i-flip"/></svg>Right → left</button><button class="btn" id="copyLR" style="flex:1"><svg class="i xs"><use href="#i-flip"/></svg>Left → right</button><button class="btn icon" id="swap" title="Swap hands" aria-label="Swap hands"><svg class="i xs"><use href="#i-swap"/></svg></button></div>
+        <div class="two"><label class="sw"><input type="checkbox" id="showR" checked><span class="tr"></span><span>Show right</span></label><label class="sw"><input type="checkbox" id="showL" checked><span class="tr"></span><span>Show left</span></label></div>
+        <p class="hint">The left hand is an exact mirror of the right: bones, joint axes and the held object.</p>
+      </div>
+      <div class="sec fold closed">
+        <h4><svg class="i xs chev"><use href="#i-chev"/></svg>Appearance</h4>
+        <div class="row"><span class="lb">Fur</span><input type="color" id="fur" value="#a8243a" aria-label="Fur colour"><label class="sw" style="margin-left:8px"><input type="checkbox" id="furTex" checked><span class="tr"></span><span>Fur texture</span></label></div>
       </div>
     </section>
 
     <!-- OBJECT -->
-    <section class="pane" data-pane="object">
-      <div class="card">
-        <div class="bd" style="padding-top:13px">
-          <div class="model-hero"><div class="th" id="heroThumb"></div><div class="nm"><span class="hint">Holding</span><b id="heroName">—</b><span id="objName"></span></div></div>
-          <div class="row"><button class="btn violet" id="import"><svg class="i sm"><use href="#i-plus"/></svg>Import model</button><button class="btn" id="openModels"><svg class="i sm"><use href="#i-layers"/></svg>My models</button></div>
-          <input type="file" id="file" multiple hidden>
-        </div>
+    <section class="pane" data-pane="object" role="tabpanel">
+      <div class="crumb"><span class="th" id="heroThumb"></span><div><small>Held in the <span id="objHand">right</span> hand</small><b id="heroName">—</b></div><button class="btn ghost sm" id="objReset" title="Reset the placement"><svg class="i xs"><use href="#i-refresh"/></svg>Reset</button></div>
+      <div class="sec">
+        <div class="two"><button class="btn acc" id="import"><svg class="i xs"><use href="#i-plus"/></svg>Import model</button><button class="btn" id="openModels"><svg class="i xs"><use href="#i-layers"/></svg>Library</button></div>
+        <input type="file" id="file" multiple hidden>
       </div>
-
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-move"/></svg>Placement · <span id="objHand" style="color:var(--muted);font-weight:500">right</span>&nbsp;hand</h3><button class="btn sm ghost" id="objReset">Reset</button></div>
-        <div class="bd">
-          <div class="subhd">Position <span style="text-transform:none;letter-spacing:0;font-weight:500">cm</span></div>
-          <div class="ctl axis-x"><span class="lbl">Palm</span><button class="nud" data-nudge="p0-">−</button><input type="range" id="p0" min="-30" max="30" step="0.05"><button class="nud" data-nudge="p0+">+</button><input type="number" id="p0n" step="0.1"></div>
-          <div class="ctl axis-y"><span class="lbl">Up</span><button class="nud" data-nudge="p1-">−</button><input type="range" id="p1" min="-30" max="30" step="0.05"><button class="nud" data-nudge="p1+">+</button><input type="number" id="p1n" step="0.1"></div>
-          <div class="ctl axis-z"><span class="lbl">Thumb</span><button class="nud" data-nudge="p2-">−</button><input type="range" id="p2" min="-30" max="30" step="0.05"><button class="nud" data-nudge="p2+">+</button><input type="number" id="p2n" step="0.1"></div>
-          <div class="subhd">Rotation <span style="text-transform:none;letter-spacing:0;font-weight:500">degrees</span></div>
-          <div class="ctl axis-x"><span class="lbl">Pitch</span><button class="nud" data-nudge="r0-">−</button><input type="range" id="r0" min="-180" max="180" step="0.5"><button class="nud" data-nudge="r0+">+</button><input type="number" id="r0n" step="1"></div>
-          <div class="ctl axis-y"><span class="lbl">Yaw</span><button class="nud" data-nudge="r1-">−</button><input type="range" id="r1" min="-180" max="180" step="0.5"><button class="nud" data-nudge="r1+">+</button><input type="number" id="r1n" step="1"></div>
-          <div class="ctl axis-z"><span class="lbl">Roll</span><button class="nud" data-nudge="r2-">−</button><input type="range" id="r2" min="-180" max="180" step="0.5"><button class="nud" data-nudge="r2+">+</button><input type="number" id="r2n" step="1"></div>
-          <div class="two">
-            <label class="field"><span>Move step</span><select id="moveStep"><option value="0.1">1 mm</option><option value="0.25">2.5 mm</option><option value="0.5" selected>5 mm</option><option value="1">1 cm</option><option value="2">2 cm</option></select></label>
-            <label class="field"><span>Turn step</span><select id="rotStep"><option value="1">1°</option><option value="5" selected>5°</option><option value="15">15°</option><option value="45">45°</option><option value="90">90°</option></select></label>
-          </div>
-          <button class="btn outline" id="objSelect"><svg class="i sm"><use href="#i-move"/></svg>Put the gizmo on the object</button>
-          <p class="hint">Measured from the hand: out of the palm, toward the fingertips, toward the thumb. The −/+ buttons turn the object about its own axes.</p>
-        </div>
+      <div class="sec">
+        <h4>Position <span class="r">cm · from the hand</span></h4>
+        <div class="row"><span class="lb"><span class="axis" style="background:var(--x)"></span>Palm</span><button class="nud" data-nudge="p0-" aria-label="Move into the palm">−</button><div class="slw" data-unit=" cm"><input type="range" id="p0" min="-30" max="30" step="0.05" aria-label="Out of the palm"></div><button class="nud" data-nudge="p0+" aria-label="Move out of the palm">+</button><input type="number" id="p0n" step="0.1" aria-label="Out of the palm, cm"></div>
+        <div class="row"><span class="lb"><span class="axis" style="background:var(--y)"></span>Up</span><button class="nud" data-nudge="p1-" aria-label="Move down">−</button><div class="slw" data-unit=" cm"><input type="range" id="p1" min="-30" max="30" step="0.05" aria-label="Toward the fingertips"></div><button class="nud" data-nudge="p1+" aria-label="Move up">+</button><input type="number" id="p1n" step="0.1" aria-label="Toward the fingertips, cm"></div>
+        <div class="row"><span class="lb"><span class="axis" style="background:var(--z)"></span>Thumb</span><button class="nud" data-nudge="p2-" aria-label="Move away from the thumb">−</button><div class="slw" data-unit=" cm"><input type="range" id="p2" min="-30" max="30" step="0.05" aria-label="Toward the thumb"></div><button class="nud" data-nudge="p2+" aria-label="Move toward the thumb">+</button><input type="number" id="p2n" step="0.1" aria-label="Toward the thumb, cm"></div>
       </div>
-
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-ruler"/></svg>Size &amp; pivot</h3><span id="dims"></span></div>
-        <div class="bd">
-          <div class="two">
-            <label class="field"><span>Units</span><select id="units"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></label>
-            <label class="field"><span>Pivot</span><select id="pivot"><option value="center">Bounds centre</option><option value="bottom">Bottom centre</option><option value="origin">Model origin</option></select></label>
-          </div>
-          <div class="ctl" id="fitRow"><span class="lbl">Fit size</span><input type="range" id="fitSize" min="2" max="60" step="0.5"><input type="number" id="fitSizeN" step="0.5"><span class="unit">cm</span></div>
-          <div class="ctl"><span class="lbl">Scale</span><input type="range" id="scale" min="0.1" max="3" step="0.01"><input type="number" id="scaleN" step="0.01"><span class="unit">×</span></div>
-          <label class="switch"><input type="checkbox" id="objShow" checked><span class="track"></span>Show object</label>
-          <label class="switch"><input type="checkbox" id="mirrorGeo"><span class="track"></span><span>Left-handed copy in the left hand<span class="sub">Off: the same real object, held the mirrored way</span></span></label>
-        </div>
+      <div class="sec">
+        <h4>Rotation <span class="r">degrees</span></h4>
+        <div class="row"><span class="lb"><span class="axis" style="background:var(--x)"></span>Pitch</span><button class="nud" data-nudge="r0-" aria-label="Pitch down">−</button><div class="slw" data-unit="°"><input type="range" id="r0" min="-180" max="180" step="0.5" aria-label="Pitch"></div><button class="nud" data-nudge="r0+" aria-label="Pitch up">+</button><input type="number" id="r0n" step="1" aria-label="Pitch degrees"></div>
+        <div class="row"><span class="lb"><span class="axis" style="background:var(--y)"></span>Yaw</span><button class="nud" data-nudge="r1-" aria-label="Yaw left">−</button><div class="slw" data-unit="°"><input type="range" id="r1" min="-180" max="180" step="0.5" aria-label="Yaw"></div><button class="nud" data-nudge="r1+" aria-label="Yaw right">+</button><input type="number" id="r1n" step="1" aria-label="Yaw degrees"></div>
+        <div class="row"><span class="lb"><span class="axis" style="background:var(--z)"></span>Roll</span><button class="nud" data-nudge="r2-" aria-label="Roll left">−</button><div class="slw" data-unit="°"><input type="range" id="r2" min="-180" max="180" step="0.5" aria-label="Roll"></div><button class="nud" data-nudge="r2+" aria-label="Roll right">+</button><input type="number" id="r2n" step="1" aria-label="Roll degrees"></div>
+        <div class="two"><label class="field"><span>Move step</span><select id="moveStep"><option value="0.1">1 mm</option><option value="0.25">2.5 mm</option><option value="0.5" selected>5 mm</option><option value="1">1 cm</option><option value="2">2 cm</option></select></label><label class="field"><span>Turn step</span><select id="rotStep"><option value="1">1°</option><option value="5" selected>5°</option><option value="15">15°</option><option value="45">45°</option><option value="90">90°</option></select></label></div>
+        <button class="btn out" id="objSelect"><svg class="i xs"><use href="#i-move"/></svg>Put the gizmo on the object</button>
       </div>
-
-      <div class="card collapsible" data-card="viewport">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-eye"/></svg>Viewport</h3><svg class="i sm chev"><use href="#i-chev"/></svg></div>
-        <div class="bd">
-          <div class="row"><span class="hint" style="flex:1;font-size:13px;color:var(--text2)">Fur colour</span><input type="color" id="fur" value="#a8243a"><button class="btn sm" id="furTex">Texture</button></div>
-          <label class="switch"><input type="checkbox" id="showJoints" checked><span class="track"></span>Joint handles</label>
-          <label class="switch"><input type="checkbox" id="showIK" checked><span class="track"></span>Fingertip IK handles</label>
-          <label class="switch"><input type="checkbox" id="xray"><span class="track"></span>See-through hand</label>
-          <label class="switch"><input type="checkbox" id="showGrid" checked><span class="track"></span>Floor grid</label>
-        </div>
+      <div class="sec">
+        <h4>Size &amp; pivot <span class="r mono" id="dims"></span></h4>
+        <div class="two"><label class="field"><span>Units</span><select id="units"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></label><label class="field"><span>Pivot</span><select id="pivot"><option value="center">Bounds centre</option><option value="bottom">Bottom centre</option><option value="origin">Model origin</option></select></label></div>
+        <div class="row" id="fitRow"><span class="lb">Fit size</span><div class="slw" data-unit=" cm"><input type="range" id="fitSize" min="2" max="60" step="0.5" aria-label="Fit size"></div><input type="number" id="fitSizeN" step="0.5" aria-label="Fit size, cm"></div>
+        <div class="row"><span class="lb">Scale</span><div class="slw" data-unit="×"><input type="range" id="scale" min="0.1" max="3" step="0.01" aria-label="Scale"></div><input type="number" id="scaleN" step="0.01" aria-label="Scale factor"></div>
+        <label class="sw right"><input type="checkbox" id="objShow" checked><span class="tr"></span><span class="lab">Show object</span></label>
+        <label class="sw right"><input type="checkbox" id="mirrorGeo"><span class="tr"></span><span class="lab">Left-handed copy in the left hand<small>Off: the same real object, held the mirrored way</small></span></label>
       </div>
     </section>
 
-    <!-- MATERIALS -->
-    <section class="pane" data-pane="materials">
-      <p class="pane-intro">The surfaces of <b id="matModel" style="color:var(--text)">this model</b>. Give any of them a colour or image textures. The model's own UVs are used.</p>
-      <div id="missingBox" class="notice" hidden><svg class="i sm"><use href="#i-alert"/></svg><div><span id="missingText"></span><br><button class="btn sm" id="texAdd2" style="margin-top:8px"><svg class="i sm"><use href="#i-upload"/></svg>Add the missing files…</button></div></div>
-      <div class="row"><button class="btn violet" id="texAdd"><svg class="i sm"><use href="#i-upload"/></svg>Add texture files…</button><button class="btn" id="texAll" title="Use one image as the base colour of every material">One image for all</button></div>
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-image"/></svg>Materials<span class="badge count" id="matCount">0</span></h3></div>
-        <div class="bd">
-          <div id="mats"></div>
-          <p class="hint" id="noUV" hidden>This model has no UV coordinates, so image textures can't show on it. Colours still work.</p>
-        </div>
+    <!-- MATERIAL -->
+    <section class="pane" data-pane="material" role="tabpanel">
+      <div class="crumb"><div><small>Materials of</small><b id="matModel">—</b></div><span class="ph cnt" style="border:0;height:auto;padding:0 8px" id="matCount">0</span></div>
+      <div class="sec">
+        <div id="missingBox" class="note warn" hidden><svg class="i s"><use href="#i-alert"/></svg><div><span id="missingText"></span><div style="margin-top:7px"><button class="btn sm" id="texAdd2"><svg class="i xs"><use href="#i-upload"/></svg>Add the missing files…</button></div></div></div>
+        <div class="two"><button class="btn acc" id="texAdd"><svg class="i xs"><use href="#i-upload"/></svg>Add textures…</button><button class="btn" id="texAll" title="Use one image as the base colour of every material">One image for all</button></div>
       </div>
-      <div class="notice info"><svg class="i sm"><use href="#i-info"/></svg><span>Drop images anywhere on the window to add them. Files with the names the model asks for are linked automatically. Textures you add are saved with the model.</span></div>
+      <div class="sec" style="gap:7px">
+        <div id="mats"></div>
+        <p class="hint" id="noUV" hidden>This model has no UV coordinates, so image textures can't show on it. Colours still work.</p>
+        <p class="hint">Drop images on a slot, or anywhere in the window. Files with the names the model asks for are linked automatically.</p>
+      </div>
       <input type="file" id="texFile" accept="image/*,.tga" multiple hidden>
       <input type="file" id="slotFile" accept="image/*" hidden>
     </section>
 
-    <!-- SAVED -->
-    <section class="pane" data-pane="library">
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-save"/></svg>Saved poses<span class="badge count" id="libCount">0</span></h3></div>
-        <div class="bd">
-          <p class="hint">Saved with <b id="libModel" style="color:var(--text2)"></b>. Each model keeps its own list.</p>
-          <div class="row"><input type="text" id="poseName" placeholder="Name this pose…" style="flex:1"><button class="btn primary" id="poseSave" style="flex:none"><svg class="i sm"><use href="#i-plus"/></svg>Save</button></div>
-          <div id="lib"></div>
-        </div>
+    <!-- EXPORT -->
+    <section class="pane" data-pane="export" role="tabpanel">
+      <div class="crumb"><div><small>Saved with <span id="libModel">this model</span></small><b>Poses &amp; export</b></div></div>
+      <div class="sec">
+        <h4>Save the current pose</h4>
+        <div class="row"><input type="text" id="poseName" placeholder="Name this pose…" style="flex:1" aria-label="Pose name"><button class="btn pri" id="poseSave"><svg class="i xs"><use href="#i-plus"/></svg>Save</button></div>
+        <p class="hint">Saved poses keep both hands and the object's placement. They're listed under the Scene panel.</p>
       </div>
-      <div class="card">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-download"/></svg>Export</h3></div>
-        <div class="bd">
-          <div class="row"><button class="btn" id="exportJson"><svg class="i sm"><use href="#i-download"/></svg>Pose JSON</button><button class="btn" id="importJson"><svg class="i sm"><use href="#i-upload"/></svg>Load JSON</button></div>
-          <button class="btn outline" id="copyUnity" title="Right-hand pose in Unity hand-bone space">Copy Unity text</button>
-          <input type="file" id="jsonFile" accept=".json,application/json" hidden>
-        </div>
+      <div class="sec">
+        <h4>Export</h4>
+        <button class="erow" id="exportJson"><svg class="i"><use href="#i-download"/></svg><span class="tx"><b>Pose JSON</b><span>Both hands, every bone and the object</span></span><span class="kbd">Ctrl E</span></button>
+        <button class="erow" id="copyUnity"><svg class="i"><use href="#i-copy"/></svg><span class="tx"><b>Unity text</b><span>Right hand in Unity hand-bone space</span></span></button>
+        <button class="erow" id="shot"><svg class="i"><use href="#i-camera"/></svg><span class="tx"><b>Screenshot</b><span>PNG of the view, handles hidden</span></span></button>
       </div>
-      <div class="card collapsible closed" data-card="keys">
-        <div class="hd"><h3><svg class="i sm"><use href="#i-keyboard"/></svg>Keyboard shortcuts</h3><svg class="i sm chev"><use href="#i-chev"/></svg></div>
-        <div class="bd"><div class="keys">
-          <kbd>Ctrl K</kbd><span>Search every action</span><kbd>Ctrl O</kbd><span>Import a model</span>
-          <kbd>S W E</kbd><span>Select · move · rotate</span><kbd>Q</kbd><span>Local / world gizmo</span><kbd>X</kbd><span>Snap</span>
-          <kbd>Tab</kbd><span>Switch hand</span><kbd>M</kbd><span>Mirror onto the other hand</span>
-          <kbd>F</kbd><span>Frame selection (or numpad .)</span><kbd>Middle-drag</kbd><span>Orbit · Shift pan · Ctrl zoom</span><kbd>Numpad 1 3 7 0</kbd><span>Front · side · top · first person (Ctrl+1 back)</span><kbd>G R</kbd><span>Move · rotate</span><kbd>H</kbd><span>Home</span><kbd>Esc</kbd><span>Deselect / close</span>
-          <kbd>Ctrl Z / Y</kbd><span>Undo / redo</span>
-        </div></div>
+      <div class="sec">
+        <h4>Load</h4>
+        <button class="btn out" id="importJson"><svg class="i xs"><use href="#i-upload"/></svg>Load a pose JSON…</button>
+        <input type="file" id="jsonFile" accept=".json,application/json" hidden>
       </div>
     </section>
   </div>
@@ -263,109 +278,125 @@
 
 <!-- ───────── status bar ───────── -->
 <footer id="statusbar">
-  <span class="dot"></span><span id="status"></span>
-  <span class="sb hide-sm"><svg class="i sm"><use href="#i-hand"/></svg><span id="sbHand">Right hand</span></span>
-  <span class="sb hide-sm"><svg class="i sm"><use href="#i-box"/></svg><span id="sbModel">—</span></span>
-  <button class="sb hide-sm" id="sbVersion" title="About and updates">v—</button>
+  <span id="status"></span>
+  <span class="sb"><svg class="i xs"><use href="#i-hand"/></svg><span id="sbHand">Right hand</span></span>
+  <span class="sb"><svg class="i xs"><use href="#i-box"/></svg><span id="sbModel">—</span></span>
+  <button id="updatePill" hidden><span class="fill" id="updFill"></span><i></i><span id="updateText">Update ready · Restart</span></button>
+  <button class="sb" id="sbVersion" title="About and updates">v—</button>
 </footer>
 
-<!-- ───────── home: model library ───────── -->
-<div id="models" class="home" hidden>
-  <div class="home-in">
-    <div class="home-head">
-      <div style="flex:1"><h1>Your models</h1><p>Pick a model to pose, or import a new one. Every model keeps its own poses, placement, size and textures.</p></div>
-      <button class="btn outline" id="mClose"><svg class="i sm"><use href="#i-hand"/></svg>Back to the editor</button>
+<!-- ───────── model library ───────── -->
+<div id="library" hidden>
+  <nav class="lnav" aria-label="Library filters">
+    <button data-lf="all" class="on"><svg class="i s"><use href="#i-grid"/></svg>All models<span class="c" id="lcAll">0</span></button>
+    <button data-lf="import"><svg class="i s"><use href="#i-upload"/></svg>Imported<span class="c" id="lcImp">0</span></button>
+    <button data-lf="sample"><svg class="i s"><use href="#i-box"/></svg>Built-in<span class="c" id="lcSam">0</span></button>
+    <h5>Sort</h5>
+    <button data-ls="used" class="on"><svg class="i s"><use href="#i-refresh"/></svg>Recently used</button>
+    <button data-ls="name"><svg class="i s"><use href="#i-list"/></svg>Name</button>
+    <span style="flex:1"></span>
+    <button id="libBack"><svg class="i s"><use href="#i-hand"/></svg>Back to the editor<span class="c">Esc</span></button>
+  </nav>
+  <section class="lmain">
+    <div class="lhero">
+      <div class="copy"><h2>Your models</h2><p>Pick one to pose, or drop a new model anywhere. Each model keeps its own poses, placement and textures.</p>
+        <div class="row"><button class="btn acc lg" id="mImport"><svg class="i s"><use href="#i-plus"/></svg>Import model</button><button class="btn lg out" id="mClose">Back to the editor</button></div></div>
+      <div class="float" id="heroCards" aria-hidden="true"><div class="fc"></div><div class="fc"></div><div class="fc"></div></div>
     </div>
-    <div class="hero">
-      <div class="dropzone" id="homeDrop" tabindex="0" role="button" aria-label="Import a model">
-        <div class="bubble"><svg class="i lg"><use href="#i-upload"/></svg></div>
-        <h2>Import a 3D model</h2>
-        <p>Drop your model here, together with its textures, or click to choose files. You'll see a preview before it's added.</p>
-        <div class="formats"><span>FBX</span><span>OBJ + MTL</span><span>glTF</span><span>GLB</span><span>DAE</span><span>STL</span><span>PLY</span><span>3MF</span><span>3DS</span></div>
-        <button class="btn violet lg" id="mImport" style="margin-top:6px"><svg class="i sm"><use href="#i-plus"/></svg>Choose files…</button>
-      </div>
-      <div class="steps">
-        <h3>Getting started</h3>
-        <div class="step"><span class="n">1</span><div><b>Import your model</b>Its textures come along if you select them too.</div></div>
-        <div class="step"><span class="n">2</span><div><b>Pose the hand</b>Drag a fingertip ball, or pick a joint and use the sliders.</div></div>
-        <div class="step"><span class="n">3</span><div><b>Mirror it</b>Copy the pose to the other hand, or turn on Live mirror.</div></div>
-        <div class="step"><span class="n">4</span><div><b>Save and export</b>Save poses per model, then export JSON or Unity text.</div></div>
-      </div>
-    </div>
-    <div class="section-h">Imported <span class="badge count" id="mImpCount">0</span></div>
-    <div class="cards" id="mImported"></div>
-    <div class="section-h">Built-in objects</div>
-    <div class="cards" id="mBuiltin"></div>
-  </div>
+    <div class="lbar"><h3 id="libTitle">All models</h3><input type="search" id="libSearch" placeholder="Search models…" aria-label="Search models"></div>
+    <div id="libGrid" role="listbox" aria-label="Models"></div>
+    <div class="ldrop"><svg class="i l"><use href="#i-upload"/></svg><span><b>Drop files anywhere</b> to import: the model plus its textures, .mtl or .bin.</span></div>
+  </section>
+  <aside class="ldet" id="libDetail" aria-label="Model details"></aside>
 </div>
 
 <!-- ───────── import dialog ───────── -->
 <div id="importDlg" class="modal" hidden>
-  <div class="sheet">
-    <div class="sheethead"><h1><svg class="i lg" style="color:var(--accent2)"><use href="#i-upload"/></svg>Import a model</h1><button class="btn icon ghost" id="impClose" title="Cancel (Esc)"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="impTitle">
+    <div class="dh"><svg class="i" style="color:var(--acc-hi)"><use href="#i-upload"/></svg><span id="impTitle">Import a model</span><span class="g"></span><span class="steps" id="impSteps"><b>1 Files</b> · 2 Check · 3 Add</span><button class="ib" id="impClose" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
     <div class="imp">
       <div>
-        <div class="dropzone" id="impDrop" tabindex="0" role="button">
-          <div class="bubble" style="width:48px;height:48px;border-radius:14px"><svg class="i"><use href="#i-file"/></svg></div>
-          <h2>Drop files or click to browse</h2>
-          <p>The model plus any textures, .mtl or .bin files that go with it.</p>
-        </div>
+        <div class="dz" id="impDrop" tabindex="0" role="button"><svg class="i l" style="color:var(--acc-hi)"><use href="#i-file"/></svg><b>Drop files or browse</b><span>The model plus any textures, .mtl or .bin files that go with it</span></div>
         <input type="file" id="impFile" multiple hidden>
-        <div class="subhd">Files <span id="impCount" style="text-transform:none;letter-spacing:0"></span></div>
-        <div id="impFiles"><p class="hint">No files yet.</p></div>
+        <div class="subh"><span>Files</span><span id="impCount"></span></div>
+        <div id="impFiles"></div>
       </div>
       <div>
-        <div id="impPreview"><div class="ph" id="impPh">A preview appears here.</div></div>
+        <div id="impPreview"><div id="impPh">A preview appears here.</div></div>
         <div id="impStats"></div>
         <label class="field"><span>Name</span><input type="text" id="impName" placeholder="Model name"></label>
-        <label class="field"><span>Size</span><select id="impUnits"><option value="fit">Auto-fit to hand size (15 cm)</option><option value="m">Real size: metres</option><option value="cm">Real size: centimetres</option><option value="mm">Real size: millimetres</option><option value="in">Real size: inches</option><option value="ft">Real size: feet</option></select></label>
-        <p class="hint">You can change size, pivot and textures any time after importing.</p>
+        <div class="two"><label class="field"><span>Size</span><select id="impUnits"><option value="fit">Auto-fit to the hand (15 cm)</option><option value="m">Real size: metres</option><option value="cm">Real size: centimetres</option><option value="mm">Real size: millimetres</option><option value="in">Real size: inches</option><option value="ft">Real size: feet</option></select></label>
+          <label class="field"><span>Pivot</span><select id="impPivot"><option value="center">Bounds centre</option><option value="bottom">Bottom centre</option><option value="origin">Model origin</option></select></label></div>
+        <label class="sw right"><input type="checkbox" id="impGrip" checked><span class="tr"></span><span class="lab">Wrap the fingers around it<small>Auto-grip when it first opens</small></span></label>
       </div>
     </div>
-    <div class="sheetfoot"><span class="hint" id="impMsg" style="flex:1"></span><button class="btn ghost" id="impCancel">Cancel</button><button class="btn violet" id="impOk" disabled><svg class="i sm"><use href="#i-check"/></svg>Add to my models</button></div>
+    <div class="df"><span class="hint" id="impMsg" style="flex:1"></span><button class="btn ghost lg" id="impCancel">Cancel</button><button class="btn acc lg" id="impOk" disabled><svg class="i s"><use href="#i-check"/></svg>Add to library</button></div>
   </div>
 </div>
 
 <!-- ───────── settings ───────── -->
 <div id="settingsDlg" class="modal" hidden>
-  <div class="sheet">
-    <div class="sheethead"><h1><svg class="i lg" style="color:var(--muted)"><use href="#i-gear"/></svg>Settings</h1><button class="btn icon ghost" id="setClose" title="Close (Esc)"><svg class="i"><use href="#i-x"/></svg></button></div>
-    <div class="settings">
-      <nav class="snav">
-        <button data-spane="general" class="on"><svg class="i sm"><use href="#i-sliders"/></svg>General</button>
-        <button data-spane="display"><svg class="i sm"><use href="#i-monitor"/></svg>Display</button>
-        <button data-spane="updates"><svg class="i sm"><use href="#i-refresh"/></svg>Updates</button>
-        <button data-spane="data"><svg class="i sm"><use href="#i-trash"/></svg>Data</button>
-        <button data-spane="about"><svg class="i sm"><use href="#i-info"/></svg>About</button>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="setTitle" style="width:min(900px,100%)">
+    <div class="dh"><svg class="i" style="color:var(--tx3)"><use href="#i-gear"/></svg><span id="setTitle">Settings</span><span class="g"></span><button class="ib" id="setClose" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="sett">
+      <nav class="snav" aria-label="Settings sections">
+        <button data-spane="general" class="on"><svg class="i s"><use href="#i-sliders"/></svg>General</button>
+        <button data-spane="controls"><svg class="i s"><use href="#i-mouse"/></svg>Controls</button>
+        <button data-spane="access"><svg class="i s"><use href="#i-access"/></svg>Accessibility</button>
+        <button data-spane="updates"><svg class="i s"><use href="#i-refresh"/></svg>Updates</button>
+        <button data-spane="data"><svg class="i s"><use href="#i-trash"/></svg>Data</button>
+        <button data-spane="about"><svg class="i s"><use href="#i-info"/></svg>About</button>
       </nav>
       <div class="spanes">
         <section class="spane on" data-spane="general">
-          <h2>General</h2>
-          <label class="srow switch"><span class="lab"><b>Open on the Home screen</b><span>Show your models when the app starts.</span></span><input type="checkbox" id="setHome"><span class="track"></span></label>
-          <label class="srow switch"><span class="lab"><b>Auto-grip new models</b><span>Close the fingers onto a model the first time it opens.</span></span><input type="checkbox" id="setGrip"><span class="track"></span></label>
-          <div class="srow"><span class="lab"><b>Mouse controls</b><span>Blender: middle-drag orbits, Shift pans, Ctrl zooms, Alt+left = middle. Classic: left orbits, right pans.</span></span><div class="seg" id="setMouse"><button data-m="blender">Blender</button><button data-m="classic">Classic</button></div></div>
-          <div class="srow"><span class="lab"><b>Default size for imports</b><span>Pre-selected in the import window.</span></span><select id="setUnits" style="width:180px"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></div>
+          <h3>General</h3>
+          <label class="srow sw right"><input type="checkbox" id="setHome"><span class="tr"></span><span class="lab"><b>Open on the model library</b><small>Show your models when the app starts.</small></span></label>
+          <label class="srow sw right"><input type="checkbox" id="setGrip"><span class="tr"></span><span class="lab"><b>Auto-grip new models</b><small>Close the fingers onto a model the first time it opens.</small></span></label>
+          <div class="srow"><span class="lab"><b>Default size for imports</b><small>Pre-selected in the import window.</small></span><select id="setUnits" style="width:190px"><option value="fit">Auto-fit</option><option value="m">Metres</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="in">Inches</option><option value="ft">Feet</option></select></div>
         </section>
-        <section class="spane" data-spane="display">
-          <h2>Display</h2>
-          <div class="srow"><span class="lab"><b>Interface size</b><span id="zoomHint">Makes text and controls bigger or smaller.</span></span><div class="seg" id="setZoom"><button data-z="0.9">S</button><button data-z="1">M</button><button data-z="1.1">L</button><button data-z="1.25">XL</button></div></div>
-          <label class="srow switch"><span class="lab"><b>Viewport hints</b><span>The orbit / pan / zoom reminder in the corner.</span></span><input type="checkbox" id="setHints"><span class="track"></span></label>
+        <section class="spane" data-spane="controls">
+          <h3>Mouse<small>How the viewport responds to the mouse.</small></h3>
+          <div class="opt" id="setMouse" role="radiogroup" aria-label="Mouse controls">
+            <button class="optc" data-m="blender" role="radio"><span class="h"><span class="radio"></span>Blender</span><span class="mouse"><svg width="34" height="46" viewBox="0 0 34 46" aria-hidden="true"><rect x="2" y="2" width="30" height="42" rx="15" fill="none" stroke="#9a9aa6" stroke-width="2"/><path d="M17 2v16M2 18h30" stroke="#9a9aa6" stroke-width="2"/><rect x="14" y="7" width="6" height="9" rx="3" fill="#b9a6fc"/></svg><span><b>Middle-drag</b> orbit<br>Shift pan · Ctrl zoom<br>Alt + left = middle</span></span></button>
+            <button class="optc" data-m="classic" role="radio"><span class="h"><span class="radio"></span>Classic</span><span class="mouse"><svg width="34" height="46" viewBox="0 0 34 46" aria-hidden="true"><rect x="2" y="2" width="30" height="42" rx="15" fill="none" stroke="#9a9aa6" stroke-width="2"/><path d="M17 2v16M2 18h30" stroke="#9a9aa6" stroke-width="2"/><path d="M2 18 V17 A15 15 0 0 1 17 2 V18z" fill="#b9a6fc"/></svg><span><b>Left-drag</b> orbit<br>Right-drag pan<br>Wheel zoom</span></span></button>
+          </div>
+          <label class="srow sw right"><input type="checkbox" id="setZoomCursor"><span class="tr"></span><span class="lab"><b>Zoom toward the cursor</b><small>The wheel zooms to what's under the mouse.</small></span></label>
+          <h3 style="margin-top:6px">Keyboard</h3>
+          <table class="keys">
+            <tr><td>Search every action</td><td><span class="kbd">Ctrl K</span></td></tr>
+            <tr><td>Select · move · rotate</td><td><span class="kbd">S</span> <span class="kbd">W</span> <span class="kbd">E</span> · <span class="kbd">G</span> <span class="kbd">R</span></td></tr>
+            <tr><td>Local / world gizmo · snap</td><td><span class="kbd">Q</span> <span class="kbd">X</span></td></tr>
+            <tr><td>Front · side · top · first person</td><td><span class="kbd">Num 1</span> <span class="kbd">3</span> <span class="kbd">7</span> <span class="kbd">0</span> · back <span class="kbd">Ctrl Num 1</span></td></tr>
+            <tr><td>Frame selection</td><td><span class="kbd">F</span> or <span class="kbd">Num .</span></td></tr>
+            <tr><td>Switch hand · mirror onto the other hand</td><td><span class="kbd">Tab</span> <span class="kbd">M</span></td></tr>
+            <tr><td>Model library · import · save pose · export</td><td><span class="kbd">H</span> <span class="kbd">Ctrl O</span> <span class="kbd">Ctrl S</span> <span class="kbd">Ctrl E</span></td></tr>
+            <tr><td>Copy / paste joint values</td><td><span class="kbd">Ctrl C</span> <span class="kbd">Ctrl V</span></td></tr>
+            <tr><td>Move between panels</td><td><span class="kbd">F6</span></td></tr>
+            <tr><td>Undo · redo · deselect</td><td><span class="kbd">Ctrl Z</span> <span class="kbd">Ctrl Y</span> <span class="kbd">Esc</span></td></tr>
+          </table>
+        </section>
+        <section class="spane" data-spane="access">
+          <h3>Accessibility</h3>
+          <div class="srow"><span class="lab"><b>Interface size</b><small id="zoomHint">Makes all text and controls bigger or smaller.</small></span><div class="seg" id="setZoom"><button data-z="0.9">S</button><button data-z="1">M</button><button data-z="1.1">L</button><button data-z="1.25">XL</button></div></div>
+          <label class="srow sw right"><input type="checkbox" id="setLarge"><span class="tr"></span><span class="lab"><b>Larger click targets</b><small>Taller rows and controls everywhere.</small></span></label>
+          <label class="srow sw right"><input type="checkbox" id="setContrast"><span class="tr"></span><span class="lab"><b>High contrast</b><small>Brighter text and stronger borders.</small></span></label>
+          <label class="srow sw right"><input type="checkbox" id="setReduce"><span class="tr"></span><span class="lab"><b>Reduce motion</b><small>Turns off sliding, springs and looping animations. Follows your system setting by default.</small></span></label>
         </section>
         <section class="spane" data-spane="updates">
-          <h2>Updates</h2>
-          <div id="updStatus"><span class="spinner" id="updSpin" hidden></span><span id="updText">—</span></div>
-          <div class="row" style="justify-content:flex-start"><button class="btn" id="updCheck" style="flex:none"><svg class="i sm"><use href="#i-refresh"/></svg>Check for updates</button><button class="btn violet" id="updInstall" style="flex:none" hidden>Restart and update</button></div>
-          <p class="hint">The desktop app checks GitHub for new versions when it starts and every few hours, downloads them in the background, and installs them the next time it closes.</p>
+          <h3>Updates</h3>
+          <div id="updStatus"><span class="spin" id="updSpin" hidden></span><span id="updText">—</span></div>
+          <div class="row"><button class="btn" id="updCheck"><svg class="i xs"><use href="#i-refresh"/></svg>Check for updates</button><button class="btn acc" id="updInstall" hidden>Restart and update</button></div>
+          <p class="hint">The desktop app checks GitHub when it starts and every few hours, downloads new versions in the background, and installs them the next time it closes.</p>
         </section>
         <section class="spane" data-spane="data">
-          <h2>Data</h2>
+          <h3>Data</h3>
           <p class="hint">Models, textures, poses and settings are stored on this computer only.</p>
-          <div class="srow"><span class="lab"><b>Reset everything</b><span>Deletes all imported models, textures, saved poses and settings.</span></span><button class="btn danger" id="resetAll"><svg class="i sm"><use href="#i-trash"/></svg>Reset…</button></div>
+          <div class="srow"><span class="lab"><b>Reset everything</b><small>Deletes all imported models, textures, saved poses and settings.</small></span><button class="btn danger" id="resetAll"><svg class="i xs"><use href="#i-trash"/></svg>Reset…</button></div>
         </section>
         <section class="spane" data-spane="about">
-          <div class="about-logo"><img src="icon.png" alt=""><div><b>Hand Poser</b><span class="hint" id="aboutVer">Version —</span></div></div>
-          <p class="hint" style="font-size:13.5px;color:var(--dim)">Pose a gorilla hand around your own 3D models: per-bone controls, fingertip IK, exact left/right mirroring, per-model saved poses and textures.</p>
-          <div class="row" style="justify-content:flex-start"><a class="btn outline" id="ghLink" href="https://github.com/stridefr/hand-poser" target="_blank" rel="noopener" style="flex:none"><svg class="i sm"><use href="#i-link"/></svg>GitHub</a><a class="btn outline" id="relLink" href="https://github.com/stridefr/hand-poser/releases" target="_blank" rel="noopener" style="flex:none">Release notes</a></div>
+          <div class="about"><img src="icon.png" alt=""><div><b>Hand Poser</b><span class="hint" id="aboutVer">Version —</span></div></div>
+          <p class="hint" style="font-size:13.5px;color:var(--tx2)">Pose a gorilla hand around your own 3D models: per-bone controls, fingertip IK, exact left/right mirroring, per-model saved poses and textures.</p>
+          <div class="row"><a class="btn out" href="https://github.com/stridefr/hand-poser" target="_blank" rel="noopener"><svg class="i xs"><use href="#i-link"/></svg>GitHub</a><a class="btn out" href="https://github.com/stridefr/hand-poser/releases" target="_blank" rel="noopener">Release notes</a></div>
         </section>
       </div>
     </div>
@@ -374,14 +405,14 @@
 
 <!-- ───────── command palette ───────── -->
 <div id="palette" class="modal" hidden>
-  <div class="sheet">
-    <div class="search"><svg class="i"><use href="#i-search"/></svg><input type="text" id="palInput" placeholder="Type a command, preset, view or model…" autocomplete="off"><span class="kbd">Esc</span></div>
-    <div id="palList"></div>
+  <div class="dlg" role="dialog" aria-modal="true" aria-label="Search actions">
+    <div class="pin2"><svg class="i"><use href="#i-search"/></svg><input type="text" id="palInput" placeholder="Type an action, preset, view or model…" autocomplete="off" aria-label="Search actions"><span class="kbd">Esc</span></div>
+    <div id="palList" role="listbox"></div>
     <div class="palfoot"><span><span class="kbd">↑</span> <span class="kbd">↓</span> move</span><span><span class="kbd">Enter</span> run</span></div>
   </div>
 </div>
 
-<div id="toast"><span class="ic"><svg class="i sm ok-i"><use href="#i-check"/></svg><svg class="i sm err-i"><use href="#i-alert"/></svg></span><span id="toastText"></span></div>
+<div id="toast" role="status" aria-live="polite"><span class="ic"><svg class="i s ok-i"><use href="#i-check"/></svg><svg class="i s err-i"><use href="#i-alert"/></svg></span><span id="toastText"></span><button id="toastUndo" hidden>Undo</button><span class="life"></span></div>
 <div id="drop"><div class="box"><svg class="i"><use href="#i-upload"/></svg><b>Drop to import</b><span class="hint">A model with its textures, images for the current model, or a pose JSON</span></div></div>
 
 <script src="hand_data.js"></script>

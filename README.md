@@ -15,6 +15,16 @@ The app **updates itself**. It checks GitHub when it starts and every few hours,
 
 > The installer isn't code-signed yet, so Windows SmartScreen may say "Windows protected your PC". Click **More info → Run anyway**.
 
+## The layout
+
+- **Scene outliner (left):** the held object, both hands, every finger and every joint, with live values. Click to select, double-click to frame, right-click for actions, and use the arrow keys to move and expand. Your saved poses for the current model sit underneath.
+- **Viewport (middle):** the tool strip on top (select, move, rotate, local/world, snap, camera, overlays) and the axes in the corner.
+- **Properties (right):** **Bone, Hand, Object, Material and Export** tabs. The panel switches to the right tab as you select things.
+- **Menus:** File, Edit, Pose, View and Help in the title bar, plus right-click menus on joints, hands and the object.
+- **Status bar:** mouse hints, the active hand and model, and the update notice.
+- **Model library (H):** your models as cards with details and saved poses. Double-click a card to open it.
+- **Settings (Ctrl+,):** General, Controls, Accessibility (interface size, larger targets, high contrast, reduce motion), Updates, Data and About.
+
 ## What it does
 
 - **Your own models:** FBX, OBJ + MTL, glTF / GLB, DAE, STL, PLY, 3MF and 3DS.
@@ -28,9 +38,9 @@ The app **updates itself**. It checks GitHub when it starts and every few hours,
   - **Fingertip IK:** drag the ball on a fingertip and the whole finger bends in natural proportions.
   - **Shortcuts:** per-finger curl and spread, presets, and **Auto-grip**, which closes the fingers until they touch the object.
 - **Left ⇄ right:** the left hand is an exact reflection of the right, including skeleton, joint axes and the held object, so the thumb and palm always face the right way. You can copy either way, swap, or turn on **Live mirror**.
-- **Model library:** the Home screen lists your models. Each one remembers its pose, object placement, size, textures and named saved poses.
+- **Model library:** each model remembers its pose, object placement, size, textures and named saved poses.
 - **Export:** pose JSON for both hands, or Unity hand-bone text for the right hand.
-- **App features:** Ctrl+K command search, undo/redo, keyboard shortcuts, interface size setting, and screenshots.
+- **App features:** Ctrl+K command search, undo/redo with an Undo button on every big change, copy/paste of joint values, keyboard shortcuts (F6 moves between panels), accessibility settings, and screenshots.
 
 ![Home screen](docs/home.jpg)
 

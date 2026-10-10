@@ -32,8 +32,8 @@ function createWindow() {
     icon: path.join(__dirname, '..', 'build', 'icon.png'),
     // custom title bar: the app bar is the drag area, Windows draws its own min / max / close over it
     titleBarStyle: 'hidden',
-    titleBarOverlay: process.platform === 'darwin' ? undefined : { color: '#0c0c0f', symbolColor: '#a1a1aa', height: 56 },
-    trafficLightPosition: { x: 16, y: 20 },
+    titleBarOverlay: process.platform === 'darwin' ? undefined : { color: '#121215', symbolColor: '#c9c9d1', height: 44 },
+    trafficLightPosition: { x: 14, y: 14 },
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, sandbox: true },
   });
   if (b.maximized) win.maximize();
