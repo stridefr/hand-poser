@@ -11,7 +11,7 @@ Get the installer from the **[latest release](https://github.com/stridefr/hand-p
 - **Windows:** `Hand-Poser-Setup-x.y.z.exe`
 - **Linux:** `Hand-Poser-x.y.z.AppImage`
 
-The app **updates itself**. It checks GitHub when it starts and every few hours, then downloads new versions in the background. When an update is ready, a pill appears in the title bar. Click it to restart into the new version, or the update installs the next time you close the app.
+The app **updates itself**. It checks GitHub when it starts and every few hours, then downloads new versions in the background. When an update is ready, a green pill appears in the status bar at the bottom. Click it to restart into the new version, or the update installs the next time you close the app.
 
 > The installer isn't code-signed yet, so Windows SmartScreen may say "Windows protected your PC". Click **More info → Run anyway**.
 
@@ -42,7 +42,7 @@ The app **updates itself**. It checks GitHub when it starts and every few hours,
 - **Export:** pose JSON for both hands, or Unity hand-bone text for the right hand.
 - **App features:** Ctrl+K command search, undo/redo with an Undo button on every big change, copy/paste of joint values, keyboard shortcuts (F6 moves between panels), accessibility settings, and screenshots.
 
-![Home screen](docs/home.jpg)
+![Model library](docs/home.jpg)
 
 ## Develop
 
